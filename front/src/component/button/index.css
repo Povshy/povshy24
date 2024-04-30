@@ -1,0 +1,19 @@
+.button {
+    padding: 10px 16px;
+    border-radius: 12px;
+    width: 353px;
+    height: 56px;
+
+    transition: opacity 0.4s;
+}
+
+.button__dark {
+    color: white;
+    background-color: #775CE5;
+}
+
+.button__light {
+    color: #775CE5;
+    background-color: white;
+    border-color: #775CE5;
+}
