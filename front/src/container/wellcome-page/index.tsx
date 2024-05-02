@@ -3,13 +3,17 @@ import "./index.css";
 
 import Button from "../../component/button";
 
+import { useNavigate } from "react-router-dom";
+
 const WellcomePage: React.FC = () => {
+  const navigate = useNavigate();
+
   const handleSignUp = () => {
-    alert("SignUp");
+    navigate("/signup");
   };
 
   const handleSignIn = () => {
-    alert("SignIn");
+    navigate("/signin");
   };
 
   return (
@@ -27,8 +31,8 @@ const WellcomePage: React.FC = () => {
       </div>
 
       <div className="buttons">
-        <Button onClick={handleSignUp} text="SignUp" dark />
-        <Button onClick={handleSignIn} text="SignIn" />
+        <Button onClick={handleSignUp} text="Sign Up" dark />
+        <Button onClick={handleSignIn} text="Sign In" />
       </div>
     </div>
   );
