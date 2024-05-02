@@ -6,6 +6,7 @@ import SigninPage from "./container/signin-page";
 import SignupConfirmPage from "./container/signup-confirm-page";
 import RecoveryPage from "./container/recovery-page";
 import RecoveryConfirmPage from "./container/recovery-confirm-page";
+import BalancePage from "./container/balance";
 
 import "./App.css";
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/signup-confirm" element={<SignupConfirmPage />} />
           <Route path="/recovery" element={<RecoveryPage />} />
           <Route path="/recovery-confirm" element={<RecoveryConfirmPage />} />
+          <Route path="/balance" element={<BalancePage />} />
         </Routes>
       </Router>
     </div>

@@ -4,7 +4,7 @@ import "./index.css";
 
 interface TitleProps {
   title: string;
-  description: string;
+  description?: string;
 }
 
 const Title: React.FC<TitleProps> = ({ title, description }) => {

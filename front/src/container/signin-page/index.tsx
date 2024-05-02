@@ -1,5 +1,6 @@
 import React from "react";
 import "./index.css";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../../component/button";
 import Title from "../../component/title";
@@ -7,8 +8,10 @@ import Field from "../../component/field";
 import BackButton from "../../component/back-button";
 
 const SigninPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const handleContinue = () => {
-    alert("Continue");
+    navigate("/balance");
   };
 
   return (
