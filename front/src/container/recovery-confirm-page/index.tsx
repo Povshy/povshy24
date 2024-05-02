@@ -12,29 +12,33 @@ const RecoveryConfirmPage: React.FC = () => {
   };
 
   return (
-    <div className="signup-page">
+    <div>
       <BackButton />
-
-      <Title title="Recover password" description="Choose a recovery method" />
-      <div className="field-block">
-        <Field
-          type="number"
-          placeholder="Enter your code ..."
-          // value={email}
-          // onChange={(e) => setEmail(e.target.value)}
-          label="Code:"
+      <div className="signup-page">
+        <Title
+          title="Recover password"
+          description="Choose a recovery method"
         />
+        <div className="field-block">
+          <Field
+            type="number"
+            placeholder="Enter your code ..."
+            // value={email}
+            // onChange={(e) => setEmail(e.target.value)}
+            label="Code:"
+          />
 
-        <Field
-          type="password"
-          placeholder="Enter your new password ..."
-          // value={password}
-          // onChange={(e) => setPassword(e.target.value)}
-          label="New password:"
-        />
-      </div>
-      <div>
-        <Button onClick={handleContinue} text="Restore password" dark />
+          <Field
+            type="password"
+            placeholder="Enter your new password ..."
+            // value={password}
+            // onChange={(e) => setPassword(e.target.value)}
+            label="New password:"
+          />
+        </div>
+        <div>
+          <Button onClick={handleContinue} text="Restore password" dark />
+        </div>
       </div>
     </div>
   );

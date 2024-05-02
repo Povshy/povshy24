@@ -15,32 +15,33 @@ const SignupPage: React.FC = () => {
   };
 
   return (
-    <div className="signup-page">
+    <div>
       <BackButton />
+      <div className="signup-page">
+        <Title title="Sign Up" description="Choose a registration method" />
+        <div className="field-block">
+          <Field
+            type="email"
+            placeholder="Enter your email ..."
+            // value={email}
+            // onChange={(e) => setEmail(e.target.value)}
+            label="Email:"
+          />
 
-      <Title title="Sign Up" description="Choose a registration method" />
-      <div className="field-block">
-        <Field
-          type="email"
-          placeholder="Enter your email ..."
-          // value={email}
-          // onChange={(e) => setEmail(e.target.value)}
-          label="Email:"
-        />
-
-        <Field
-          type="password"
-          placeholder="Enter your password ..."
-          // value={password}
-          // onChange={(e) => setPassword(e.target.value)}
-          label="Password:"
-        />
-        <span>
-          Already have an account? <a href="/signin">Sign In</a>
-        </span>
-      </div>
-      <div>
-        <Button onClick={handleContinue} text="Continue" dark />
+          <Field
+            type="password"
+            placeholder="Enter your password ..."
+            // value={password}
+            // onChange={(e) => setPassword(e.target.value)}
+            label="Password:"
+          />
+          <span>
+            Already have an account? <a href="/signin">Sign In</a>
+          </span>
+        </div>
+        <div>
+          <Button onClick={handleContinue} text="Continue" dark />
+        </div>
       </div>
     </div>
   );

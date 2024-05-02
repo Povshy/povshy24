@@ -12,25 +12,26 @@ const SignupConfirmPage: React.FC = () => {
   };
 
   return (
-    <div className="signup-page">
+    <div>
       <BackButton />
-
-      <Title
-        title="Confirm account"
-        description="Write the code you received"
-      />
-      <div className="field-block">
-        <Field
-          type="number"
-          placeholder="Enter your code ..."
-          // value={email}
-          // onChange={(e) => setEmail(e.target.value)}
-          label="Code:"
+      <div className="signup-page">
+        <Title
+          title="Confirm account"
+          description="Write the code you received"
         />
-      </div>
+        <div className="field-block">
+          <Field
+            type="number"
+            placeholder="Enter your code ..."
+            // value={email}
+            // onChange={(e) => setEmail(e.target.value)}
+            label="Code:"
+          />
+        </div>
 
-      <div>
-        <Button onClick={handleConfirm} text="Confirm" dark />
+        <div>
+          <Button onClick={handleConfirm} text="Confirm" dark />
+        </div>
       </div>
     </div>
   );

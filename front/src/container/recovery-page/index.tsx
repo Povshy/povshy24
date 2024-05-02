@@ -15,21 +15,25 @@ const RecoveryPage: React.FC = () => {
   };
 
   return (
-    <div className="signup-page">
+    <div>
       <BackButton />
-
-      <Title title="Recover password" description="Choose a recovery method" />
-      <div className="field-block">
-        <Field
-          type="email"
-          placeholder="Enter your email ..."
-          // value={email}
-          // onChange={(e) => setEmail(e.target.value)}
-          label="Email:"
+      <div className="signup-page">
+        <Title
+          title="Recover password"
+          description="Choose a recovery method"
         />
-      </div>
-      <div>
-        <Button onClick={handleContinue} text="Send code" dark />
+        <div className="field-block">
+          <Field
+            type="email"
+            placeholder="Enter your email ..."
+            // value={email}
+            // onChange={(e) => setEmail(e.target.value)}
+            label="Email:"
+          />
+        </div>
+        <div>
+          <Button onClick={handleContinue} text="Send code" dark />
+        </div>
       </div>
     </div>
   );
