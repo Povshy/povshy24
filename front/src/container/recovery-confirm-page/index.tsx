@@ -4,6 +4,7 @@ import "./index.css";
 import Button from "../../component/button";
 import Title from "../../component/title";
 import Field from "../../component/field";
+import FieldPassword from "../../component/field-password";
 import BackButton from "../../component/back-button";
 
 const RecoveryConfirmPage: React.FC = () => {
@@ -28,7 +29,7 @@ const RecoveryConfirmPage: React.FC = () => {
             label="Code:"
           />
 
-          <Field
+          <FieldPassword
             type="password"
             placeholder="Enter your new password ..."
             // value={password}

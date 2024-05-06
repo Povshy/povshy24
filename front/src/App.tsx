@@ -1,5 +1,5 @@
-import { useState, createContext } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useState, useReducer, createContext } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import WellcomePage from "./container/wellcome-page";
 import SignupPage from "./container/signup-page";
 import SigninPage from "./container/signin-page";
@@ -11,10 +11,12 @@ import SettingsPage from "./container/settings-page";
 
 import "./App.css";
 
+const AuthContext = createContext(null);
+
 function App() {
   return (
     <div className="page">
-      <Router>
+      <BrowserRouter>
         <Routes>
           <Route index element={<WellcomePage />} />
           <Route path="/signup" element={<SignupPage />} />
@@ -25,7 +27,7 @@ function App() {
           <Route path="/balance" element={<BalancePage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Routes>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 }

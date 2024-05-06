@@ -1,0 +1,39 @@
+.input-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.input-password {
+    border: 1px solid #939199;
+    border-radius: 12px;
+    padding: 20px 16px;
+    width: 353px;
+    height: 56px;
+    background-color: white;
+}
+
+.field__wrapper {
+    width: 100%;
+    display: grid;
+
+    position: relative;
+}
+
+.field__icon {
+    display: block;
+    position: relative;
+    top: -40px;
+    right: -310px;
+	height: 20px;
+	width: 20px;
+	background-repeat: no-repeat;
+}
+
+.icon-show {
+    background-image: url(show.svg);
+}
+.icon-unshow {
+    background-image: url(unshow.svg);
+}

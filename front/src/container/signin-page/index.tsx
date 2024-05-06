@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../component/button";
 import Title from "../../component/title";
 import Field from "../../component/field";
+import FieldPassword from "../../component/field-password";
 import BackButton from "../../component/back-button";
 
 const SigninPage: React.FC = () => {
@@ -28,7 +29,7 @@ const SigninPage: React.FC = () => {
             label="Email:"
           />
 
-          <Field
+          <FieldPassword
             type="password"
             placeholder="Enter your password ..."
             // value={password}

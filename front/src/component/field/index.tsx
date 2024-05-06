@@ -5,16 +5,16 @@ import "./index.css";
 interface FieldProps {
   type: string;
   placeholder: string;
-  // value: string | number;
-  // onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string | number;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   label: string;
 }
 
 const Field: React.FC<FieldProps> = ({
   type,
   placeholder,
-  // value,
-  // onChange,
+  value,
+  onChange,
   label,
 }) => {
   return (
@@ -23,8 +23,8 @@ const Field: React.FC<FieldProps> = ({
       <input
         type={type}
         placeholder={placeholder}
-        // value={value}
-        // onChange={onChange}
+        value={value}
+        onChange={onChange}
         className="input"
       />
     </div>

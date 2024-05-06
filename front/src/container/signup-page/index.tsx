@@ -1,17 +1,67 @@
-import React from "react";
+import { useReducer } from "react";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../../component/button";
 import Title from "../../component/title";
 import Field from "../../component/field";
+import FieldPassword from "../../component/field-password";
 import BackButton from "../../component/back-button";
+
+const initialState = {
+  email: "",
+  password: "",
+};
+
+interface State {
+  email: string;
+  password: string;
+}
+
+type Action =
+  | { type: "SET_EMAIL"; payload: string }
+  | { type: "SET_PASSWORD"; payload: string };
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case "SET_EMAIL":
+      return { ...state, email: action.payload };
+    case "SET_PASSWORD":
+      return { ...state, password: action.payload };
+    default:
+      return state;
+  }
+};
 
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleContinue = () => {
-    navigate("/signup-confirm");
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const handleContinue = async () => {
+    try {
+      const res = await fetch("http://localhost:4000/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: state.email,
+          password: state.password,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Помилка");
+      }
+
+      const data = await res.json();
+      console.log(data);
+
+      navigate("/signup-confirm");
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -23,16 +73,20 @@ const SignupPage: React.FC = () => {
           <Field
             type="email"
             placeholder="Enter your email ..."
-            // value={email}
-            // onChange={(e) => setEmail(e.target.value)}
+            value={state.email}
+            onChange={(e) =>
+              dispatch({ type: "SET_EMAIL", payload: e.target.value })
+            }
             label="Email:"
           />
 
-          <Field
+          <FieldPassword
             type="password"
             placeholder="Enter your password ..."
-            // value={password}
-            // onChange={(e) => setPassword(e.target.value)}
+            value={state.password}
+            onChange={(e) =>
+              dispatch({ type: "SET_PASSWORD", payload: e.target.value })
+            }
             label="Password:"
           />
           <span>
