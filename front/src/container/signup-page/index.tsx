@@ -52,6 +52,7 @@ const SignupPage: React.FC = () => {
       });
 
       if (!res.ok) {
+        alert("Не всі поля введені коректно");
         throw new Error("Помилка");
       }
 

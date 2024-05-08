@@ -4,6 +4,7 @@ const express = require('express')
 const router = express.Router()
 
 const { User } = require('../class/user')
+const { Confirm } = require('../class/confirm')
 
 // ================================================================
 
@@ -23,6 +24,9 @@ router.post('/signup', function (req, res) {
     }
 
     const newUser = User.create(email, password)
+    const confirmCode = Confirm.generateCode()
+    newUser.confirmCode = confirmCode
+    console.log(newUser.confirmCode)
 
     return res.status(200).json({
       post: {
@@ -37,6 +41,39 @@ router.post('/signup', function (req, res) {
   }
 })
 // ===========
+router.post('/signup-confirm', function (req, res) {
+  try {
+    const { email, code } = req.body
+
+    if (!email || !code) {
+      return res.status(400).json({
+        message:
+          'Потрібно передати всі дані для підтвердження реєстрації',
+      })
+    }
+
+    const user = User.getByEmail(email)
+
+    // Перевірка коду підтвердження
+    // const isConfirmed = Confirm.verifyCode(email, code)
+
+    if (code !== user.confirmCode) {
+      return res.status(400).json({
+        message: 'Неправильний код підтвердження',
+      })
+    }
+
+    // Якщо код підтвердження вірний, можна виконати подальші дії, наприклад, підтвердження реєстрації користувача
+
+    return res.status(200).json({
+      message: 'Реєстрація підтверджена успішно',
+    })
+  } catch (e) {
+    return res.status(400).json({
+      message: e.message,
+    })
+  }
+})
 
 // ================
 

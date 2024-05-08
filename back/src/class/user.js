@@ -7,25 +7,35 @@ class User {
 
     this.email = String(email).toLowerCase()
     this.password = String(password)
+    this.confirmCode = ''
   }
 
   static create(email, password) {
-    const newUser = new User(email, password, id)
-    this.#list.push(newUser)
+    const newUser = new User(email, password)
+    User.#list.push(newUser)
 
-    console.log(this.#list)
+    console.log(User.#list)
 
     return newUser
   }
 
   static getById(id) {
     return (
-      this.#list.find((item) => item.id === Number(id)) ||
+      User.#list.find((item) => item.id === Number(id)) ||
       null
     )
   }
 
-  static getList = () => this.#list
+  static getByEmail(email) {
+    return (
+      User.#list.find((item) => item.email === email) ||
+      null
+    )
+  }
+
+  static getList() {
+    return User.#list
+  }
 }
 
 module.exports = {
