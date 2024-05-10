@@ -5,7 +5,7 @@ class Confirm {
     const code = Math.floor(1000 + Math.random() * 9000)
     this.#codes.set(email, code)
 
-    console.log('Your Code:', code)
+    // console.log('Your Code:', code)
     return code
   }
 

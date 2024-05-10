@@ -12,7 +12,6 @@ const { Confirm } = require('../class/confirm')
 
 // ↙️ тут вводимо шлях (PATH) до сторінки
 router.post('/signup', function (req, res) {
-  console.log(req.body)
   try {
     const { email, password } = req.body
 
@@ -26,12 +25,15 @@ router.post('/signup', function (req, res) {
     const newUser = User.create(email, password)
     const confirmCode = Confirm.generateCode()
     newUser.confirmCode = confirmCode
-    console.log(newUser.confirmCode)
+    console.log('88888888', newUser)
+
+    // return res.redirect(`/signup-confirm/${newUser.id}`)
 
     return res.status(200).json({
-      post: {
+      user: {
         email: newUser.email,
         password: newUser.password,
+        id: newUser.id,
       },
     })
   } catch (e) {
@@ -41,18 +43,34 @@ router.post('/signup', function (req, res) {
   }
 })
 // ===========
+// router.get('/signup-confirm', function (req, res) {
+//   const userId = req.query.id
+//   const userId = req.query
+//   console.log('User ID:', userId)
+//   console.log('Received query parameters:', req.query)
+
+//   return res.status(200).json({
+//     message: 'Реєстрація підтверджена успішно',
+//   })
+// })
+// ===========
 router.post('/signup-confirm', function (req, res) {
   try {
-    const { email, code } = req.body
+    const { code, id } = req.body
+    // const { code } = req.body
+    // const { id } = req.query
 
-    if (!email || !code) {
+    console.log(`uuuuuuser`, id)
+
+    if (!code) {
       return res.status(400).json({
         message:
           'Потрібно передати всі дані для підтвердження реєстрації',
       })
     }
 
-    const user = User.getByEmail(email)
+    const user = User.getById(id)
+    console.log(`uuuuuuser`, user)
 
     // Перевірка коду підтвердження
     // const isConfirmed = Confirm.verifyCode(email, code)

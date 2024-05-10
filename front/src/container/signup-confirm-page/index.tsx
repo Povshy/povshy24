@@ -7,6 +7,8 @@ import Title from "../../component/title";
 import Field from "../../component/field";
 import BackButton from "../../component/back-button";
 
+import { useParams } from "react-router-dom";
+
 const initialState = {
   code: "",
 };
@@ -27,9 +29,11 @@ const reducer = (state: State, action: Action): State => {
 };
 
 const SignupConfirmPage: React.FC = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const email = queryParams.get("email") || "";
+  // const location = useLocation();
+  // const queryParams = new URLSearchParams(location.search);
+  // const email = queryParams.get("email") || "";
+
+  const { id } = useParams<{ id: string }>();
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleConfirm = async () => {
@@ -40,8 +44,9 @@ const SignupConfirmPage: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: email,
+          // email: email,
           code: state.code,
+          id: id,
         }),
       });
 
@@ -51,6 +56,7 @@ const SignupConfirmPage: React.FC = () => {
 
       const data = await res.json();
       console.log(data);
+      console.log(`ggggggggggggg`, data.id);
 
       // Якщо все пройшло успішно, переходимо на іншу сторінку
       // Наприклад, підтвердження успішної реєстрації
