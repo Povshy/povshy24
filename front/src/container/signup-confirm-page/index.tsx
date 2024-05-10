@@ -38,7 +38,7 @@ const SignupConfirmPage: React.FC = () => {
 
   const handleConfirm = async () => {
     try {
-      const res = await fetch("http://localhost:4000/confirm-signup", {
+      const res = await fetch("http://localhost:4000/signup-confirm", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,8 +58,6 @@ const SignupConfirmPage: React.FC = () => {
       console.log(data);
       console.log(`ggggggggggggg`, data.id);
 
-      // Якщо все пройшло успішно, переходимо на іншу сторінку
-      // Наприклад, підтвердження успішної реєстрації
       // navigate("/signup-success");
     } catch (error) {
       console.error("Error:", error);
