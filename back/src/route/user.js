@@ -44,9 +44,10 @@ router.post('/signup', function (req, res) {
 })
 // ===========
 // router.get('/signup-confirm', function (req, res) {
-//   const userId = req.query.id
-//   const userId = req.query
-//   console.log('User ID:', userId)
+//   // const userId = req.query.id
+//   // const userId = req.query
+//   const { id } = req.query
+//   console.log('User ID:', id)
 //   console.log('Received query parameters:', req.query)
 
 //   return res.status(200).json({
@@ -56,13 +57,13 @@ router.post('/signup', function (req, res) {
 // ===========
 router.post('/signup-confirm', function (req, res) {
   try {
-    const { code, id } = req.body
-    // const { code } = req.body
-    // const { id } = req.query
+    // const { code, id } = req.body
+    const { code } = req.body
+    const { id } = req.query
 
-    console.log(`uuuuuuser`, id)
+    console.log(`uuuuuuser id:`, id)
 
-    if (!code) {
+    if (!code || !id) {
       return res.status(400).json({
         message:
           'Потрібно передати всі дані для підтвердження реєстрації',
@@ -70,7 +71,14 @@ router.post('/signup-confirm', function (req, res) {
     }
 
     const user = User.getById(id)
-    console.log(`uuuuuuser`, user)
+
+    if (!user) {
+      return res.status(404).json({
+        message: 'Користувача з таким ID не знайдено',
+      })
+    }
+
+    console.log('Знайдений користувач:', user)
 
     // Перевірка коду підтвердження
     // const isConfirmed = Confirm.verifyCode(email, code)
@@ -86,9 +94,10 @@ router.post('/signup-confirm', function (req, res) {
     return res.status(200).json({
       message: 'Реєстрація підтверджена успішно',
     })
-  } catch (e) {
-    return res.status(400).json({
-      message: e.message,
+  } catch (error) {
+    console.error('Помилка:', error)
+    return res.status(500).json({
+      message: 'Виникла помилка при обробці запиту',
     })
   }
 })
