@@ -59,9 +59,9 @@ const SignupPage: React.FC = () => {
       const data = await res.json();
       console.log(data);
 
-      // window.location.href = `/signup-confirm?id=${data.user.id}`;
+      // window.location.href = `/signup-confirm/${data.user.id}`;
 
-      navigate(`/signup-confirm?id=${data.user.id}`);
+      navigate(`/signup-confirm/${data.user.id}`);
     } catch (error) {
       console.error("Error:", error);
     }

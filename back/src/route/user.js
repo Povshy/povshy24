@@ -24,7 +24,7 @@ router.post('/signup', function (req, res) {
 
     const newUser = User.create(email, password)
     const confirmCode = Confirm.generateCode()
-    newUser.confirmCode = confirmCode
+    newUser.id = confirmCode
     console.log('88888888', newUser)
 
     // return res.redirect(`/signup-confirm/${newUser.id}`)
@@ -57,11 +57,12 @@ router.post('/signup', function (req, res) {
 // ===========
 router.post('/signup-confirm', function (req, res) {
   try {
-    // const { code, id } = req.body
-    const { code } = req.body
-    const { id } = req.query
-
+    const { code, id } = req.body
+    // const { code } = req.body
+    // const { id } = req.query
+    console.log('Booooody:', code, id)
     console.log(`uuuuuuser id:`, id)
+    console.log(`Coooooooode:`, code)
 
     if (!code || !id) {
       return res.status(400).json({
@@ -80,16 +81,11 @@ router.post('/signup-confirm', function (req, res) {
 
     console.log('Знайдений користувач:', user)
 
-    // Перевірка коду підтвердження
-    // const isConfirmed = Confirm.verifyCode(email, code)
-
-    if (code !== user.confirmCode) {
+    if (code !== id) {
       return res.status(400).json({
         message: 'Неправильний код підтвердження',
       })
     }
-
-    // Якщо код підтвердження вірний, можна виконати подальші дії, наприклад, підтвердження реєстрації користувача
 
     return res.status(200).json({
       message: 'Реєстрація підтверджена успішно',

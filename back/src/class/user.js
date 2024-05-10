@@ -7,7 +7,7 @@ class User {
 
     this.email = String(email).toLowerCase()
     this.password = String(password)
-    this.confirmCode = ''
+    // this.confirmCode = ''
   }
 
   static create(email, password) {

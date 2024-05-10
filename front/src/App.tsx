@@ -21,7 +21,7 @@ function App() {
           <Route index element={<WellcomePage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/signin" element={<SigninPage />} />
-          <Route path="/signup-confirm" element={<SignupConfirmPage />} />
+          <Route path="/signup-confirm/:id" element={<SignupConfirmPage />} />
           <Route path="/recovery" element={<RecoveryPage />} />
           <Route path="/recovery-confirm" element={<RecoveryConfirmPage />} />
           <Route path="/balance" element={<BalancePage />} />

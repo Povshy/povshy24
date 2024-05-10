@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./index.css";
 
 import Button from "../../component/button";
@@ -29,11 +29,10 @@ const reducer = (state: State, action: Action): State => {
 };
 
 const SignupConfirmPage: React.FC = () => {
-  // const location = useLocation();
-  // const queryParams = new URLSearchParams(location.search);
-  // const email = queryParams.get("email") || "";
+  const navigate = useNavigate();
 
   const { id } = useParams<{ id: string }>();
+  console.log("Id from frooooont:", id)
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleConfirm = async () => {
@@ -58,7 +57,7 @@ const SignupConfirmPage: React.FC = () => {
       console.log(data);
       console.log(`ggggggggggggg`, data.id);
 
-      // navigate("/signup-success");
+      navigate("/balance");
     } catch (error) {
       console.error("Error:", error);
     }
