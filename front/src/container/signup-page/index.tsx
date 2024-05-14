@@ -1,4 +1,4 @@
-import { useReducer } from "react";
+import { useState, useReducer } from "react";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 
@@ -36,6 +36,8 @@ const reducer = (state: State, action: Action): State => {
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
 
+  const [errorData, setErrorData] = useState<string | null>(null);
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleContinue = async () => {
@@ -52,8 +54,10 @@ const SignupPage: React.FC = () => {
       });
 
       if (!res.ok) {
-        alert("Не всі поля введені коректно");
-        throw new Error("Помилка");
+        // alert("Не всі поля введені коректно");
+        const errorData = await res.json();
+        setErrorData(errorData.message);
+        throw new Error(errorData.message);
       }
 
       const data = await res.json();
@@ -62,7 +66,9 @@ const SignupPage: React.FC = () => {
       // window.location.href = `/signup-confirm/${data.user.id}`;
 
       navigate(`/signup-confirm/${data.user.id}`);
-    } catch (error) {
+    } catch (error: any) {
+      setErrorData(error.message);
+      // alert(error.message);
       console.error("Error:", error);
     }
   };
@@ -98,6 +104,7 @@ const SignupPage: React.FC = () => {
         </div>
         <div>
           <Button onClick={handleContinue} text="Continue" dark />
+          {errorData ? <p className="error-message">{errorData}</p> : null}
         </div>
       </div>
     </div>

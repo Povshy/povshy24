@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import { useState, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
 
@@ -31,8 +31,10 @@ const reducer = (state: State, action: Action): State => {
 const SignupConfirmPage: React.FC = () => {
   const navigate = useNavigate();
 
+  const [errorData, setErrorData] = useState<string | null>(null);
+
   const { id } = useParams<{ id: string }>();
-  console.log("Id from frooooont:", id)
+  console.log("Id from frooooont:", id);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleConfirm = async () => {
@@ -50,15 +52,17 @@ const SignupConfirmPage: React.FC = () => {
       });
 
       if (!res.ok) {
-        throw new Error("Помилка");
+        const errorData = await res.json();
+        setErrorData(errorData.message);
+        throw new Error(errorData.message);
       }
 
       const data = await res.json();
       console.log(data);
-      console.log(`ggggggggggggg`, data.id);
 
       navigate("/balance");
-    } catch (error) {
+    } catch (error: any) {
+      setErrorData(error.message);
       console.error("Error:", error);
     }
   };
@@ -89,6 +93,7 @@ const SignupConfirmPage: React.FC = () => {
 
         <div>
           <Button onClick={handleConfirm} text="Confirm" dark />
+          {errorData ? <p className="error-message">{errorData}</p> : null}
         </div>
       </div>
     </div>

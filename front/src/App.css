@@ -1,6 +1,10 @@
+:root {
+  background-color: rgb(28, 27, 27);
+}
+
 .page {
   /* padding: 32px; */
-  margin: 0 auto;
+  margin: 10px auto;
   width: 393px;
   height: 852px;
   border-radius: 24px;

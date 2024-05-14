@@ -3,6 +3,7 @@
     border-radius: 12px;
     width: 353px;
     height: 56px;
+    margin: auto 20px;
 
     transition: opacity 0.4s;
 }

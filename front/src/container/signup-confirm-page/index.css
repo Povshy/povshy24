@@ -21,9 +21,14 @@
     }
 }
 
-/* .but {
+.error-message {
     display: flex;
     flex-direction: column;
-    gap: 12px;
     align-items: center;
-} */
+    text-align: center;
+    padding: 5px;
+    color: red;
+    margin: 20px;
+    border: 1px dashed red;
+    border-radius: 10px;
+}

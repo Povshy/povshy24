@@ -22,12 +22,19 @@ router.post('/signup', function (req, res) {
       })
     }
 
+    const control = User.getByEmail(email)
+    console.log(`ccccccccccc`, control)
+
+    if (control) {
+      return res.status(400).json({
+        message: 'Користувач такий вже існує',
+      })
+    }
+
     const newUser = User.create(email, password)
     const confirmCode = Confirm.generateCode()
     newUser.id = confirmCode
     console.log('88888888', newUser)
-
-    // return res.redirect(`/signup-confirm/${newUser.id}`)
 
     return res.status(200).json({
       user: {
@@ -36,9 +43,9 @@ router.post('/signup', function (req, res) {
         id: newUser.id,
       },
     })
-  } catch (e) {
+  } catch (error) {
     return res.status(400).json({
-      message: e.message,
+      message: 'SignUp fuckin problem',
     })
   }
 })
@@ -58,11 +65,9 @@ router.post('/signup', function (req, res) {
 router.post('/signup-confirm', function (req, res) {
   try {
     const { code, id } = req.body
-    // const { code } = req.body
-    // const { id } = req.query
-    console.log('Booooody:', code, id)
-    console.log(`uuuuuuser id:`, id)
-    console.log(`Coooooooode:`, code)
+
+    console.log(`User id:`, id)
+    console.log(`Code:`, code)
 
     if (!code || !id) {
       return res.status(400).json({
