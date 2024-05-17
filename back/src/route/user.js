@@ -50,18 +50,7 @@ router.post('/signup', function (req, res) {
   }
 })
 // ===========
-// router.get('/signup-confirm', function (req, res) {
-//   // const userId = req.query.id
-//   // const userId = req.query
-//   const { id } = req.query
-//   console.log('User ID:', id)
-//   console.log('Received query parameters:', req.query)
 
-//   return res.status(200).json({
-//     message: 'Реєстрація підтверджена успішно',
-//   })
-// })
-// ===========
 router.post('/signup-confirm', function (req, res) {
   try {
     const { code, id } = req.body
@@ -92,17 +81,72 @@ router.post('/signup-confirm', function (req, res) {
       })
     }
 
+    const confirmUser = User.createConfirm(user)
+
+    if (!confirmUser) {
+      return res.status(400).json({
+        message: 'Користувача не знайдено',
+      })
+    }
+
     return res.status(200).json({
+      id: confirmUser.id,
       message: 'Реєстрація підтверджена успішно',
     })
   } catch (error) {
     console.error('Помилка:', error)
-    return res.status(500).json({
+    return res.status(400).json({
       message: 'Виникла помилка при обробці запиту',
     })
   }
 })
 
+// ================
+
+router.post('/signin', function (req, res) {
+  try {
+    const { email, password } = req.body
+
+    if (!email || !password) {
+      return res.status(400).json({
+        message:
+          'Потрібно передати всі дані для створення користувача',
+      })
+    }
+
+    const confirmUser = User.getByEmailConfirm(email)
+
+    if (!confirmUser) {
+      return res.status(400).json({
+        message: 'Користувача не знайдено',
+      })
+    }
+
+    if (password !== confirmUser.password) {
+      return res.status(400).json({
+        message: 'Пароль введено не вірно',
+      })
+    }
+
+    return res.status(200).json({
+      id: confirmUser.id,
+      message: 'Вхід виконаний успішно',
+    })
+  } catch (error) {
+    return res.status(400).json({
+      message: 'SignUp fuckin problem',
+    })
+  }
+})
+
+// ================
+router.get('/balance', function (req, res) {
+  const { id } = req.query
+
+  return res.status(200).json({
+    message: 'Вхід виконаний успішно',
+  })
+})
 // ================
 
 // Підключаємо роутер до бек-енду

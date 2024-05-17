@@ -60,7 +60,7 @@ const SignupConfirmPage: React.FC = () => {
       const data = await res.json();
       console.log(data);
 
-      navigate("/balance");
+      navigate(`/balance/${data.id}`);
     } catch (error: any) {
       setErrorData(error.message);
       console.error("Error:", error);

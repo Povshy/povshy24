@@ -24,7 +24,7 @@ function App() {
           <Route path="/signup-confirm/:id" element={<SignupConfirmPage />} />
           <Route path="/recovery" element={<RecoveryPage />} />
           <Route path="/recovery-confirm" element={<RecoveryConfirmPage />} />
-          <Route path="/balance" element={<BalancePage />} />
+          <Route path="/balance/:id" element={<BalancePage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </BrowserRouter>

@@ -1,9 +1,11 @@
 import React from "react";
 import "./index.css";
 
-import Title from "../../component/title";
+import { useParams } from "react-router-dom";
 
 const BalancePage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+
   return (
     <div className="balance-page">
       <div className="header">
