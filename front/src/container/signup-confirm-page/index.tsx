@@ -7,6 +7,8 @@ import Title from "../../component/title";
 import Field from "../../component/field";
 import BackButton from "../../component/back-button";
 
+import { saveSession } from "../../script/session";
+
 import { useParams } from "react-router-dom";
 
 const initialState = {
@@ -34,7 +36,7 @@ const SignupConfirmPage: React.FC = () => {
   const [errorData, setErrorData] = useState<string | null>(null);
 
   const { id } = useParams<{ id: string }>();
-  console.log("Id from frooooont:", id);
+  console.log("Id from front:", id);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleConfirm = async () => {
@@ -59,6 +61,7 @@ const SignupConfirmPage: React.FC = () => {
 
       const data = await res.json();
       console.log(data);
+      saveSession(data.session);
 
       navigate(`/balance/${data.id}`);
     } catch (error: any) {
@@ -66,10 +69,6 @@ const SignupConfirmPage: React.FC = () => {
       console.error("Error:", error);
     }
   };
-
-  // const handleConfirm = () => {
-  //   alert("Confirm");
-  // };
 
   return (
     <div>

@@ -9,10 +9,10 @@ class Confirm {
     return code
   }
 
-  static verifyCode(email, code) {
-    const storeCode = this.#codes.get(email)
-    return storeCode === code
-  }
+  // static verifyCode(email, code) {
+  //   const storeCode = this.#codes.get(email)
+  //   return storeCode === code
+  // }
 }
 
 module.exports = {

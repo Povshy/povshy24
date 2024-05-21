@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 
 const { User } = require('../class/user')
-const { Confirm } = require('../class/confirm')
+const { Session } = require('../class/session')
 
 // ================================================================
 
@@ -32,7 +32,7 @@ router.post('/signup', function (req, res) {
     }
 
     const newUser = User.create(email, password)
-    const confirmCode = Confirm.generateCode()
+    const confirmCode = User.generateCode()
     newUser.id = confirmCode
     console.log('88888888', newUser)
 
@@ -82,6 +82,7 @@ router.post('/signup-confirm', function (req, res) {
     }
 
     const confirmUser = User.createConfirm(user)
+    const session = Session.create(confirmUser)
 
     if (!confirmUser) {
       return res.status(400).json({
@@ -92,6 +93,7 @@ router.post('/signup-confirm', function (req, res) {
     return res.status(200).json({
       id: confirmUser.id,
       message: 'Реєстрація підтверджена успішно',
+      session,
     })
   } catch (error) {
     console.error('Помилка:', error)
@@ -115,6 +117,7 @@ router.post('/signin', function (req, res) {
     }
 
     const confirmUser = User.getByEmailConfirm(email)
+    const session = Session.create(confirmUser)
 
     if (!confirmUser) {
       return res.status(400).json({
@@ -131,6 +134,7 @@ router.post('/signin', function (req, res) {
     return res.status(200).json({
       id: confirmUser.id,
       message: 'Вхід виконаний успішно',
+      session,
     })
   } catch (error) {
     return res.status(400).json({
