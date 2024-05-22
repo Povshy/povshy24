@@ -3,11 +3,12 @@ class User {
   static #confirmList = []
   static #count = 1
 
-  constructor(email, password) {
+  constructor(email, password, balance) {
     this.id = User.#count++
 
     this.email = String(email).toLowerCase()
     this.password = String(password)
+    this.balance = balance || 2500
   }
 
   static create(email, password) {

@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useReducer, useContext } from "react";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 
@@ -7,11 +7,58 @@ import Title from "../../component/title";
 import Field from "../../component/field";
 import BackButton from "../../component/back-button";
 
+const initialState = {
+  email: "",
+};
+
+interface State {
+  email: string;
+}
+
+type Action = { type: "SET_EMAIL"; payload: string };
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case "SET_EMAIL":
+      return { ...state, email: action.payload };
+    default:
+      return state;
+  }
+};
+
 const RecoveryPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleContinue = () => {
-    navigate("/recovery-confirm");
+  const [errorData, setErrorData] = useState<string | null>(null);
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const handleContinue = async () => {
+    try {
+      const res = await fetch("http://localhost:4000/recovery", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: state.email,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        setErrorData(errorData.message);
+        throw new Error(errorData.message);
+      }
+
+      const data = await res.json();
+      console.log(data);
+
+      navigate(`/recovery-confirm/${data.id}`);
+    } catch (error: any) {
+      setErrorData(error.message);
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -26,13 +73,16 @@ const RecoveryPage: React.FC = () => {
           <Field
             type="email"
             placeholder="Enter your email ..."
-            // value={email}
-            // onChange={(e) => setEmail(e.target.value)}
+            value={state.email}
+            onChange={(e) =>
+              dispatch({ type: "SET_EMAIL", payload: e.target.value })
+            }
             label="Email:"
           />
         </div>
         <div>
           <Button onClick={handleContinue} text="Send code" dark />
+          {errorData ? <p className="error-message">{errorData}</p> : null}
         </div>
       </div>
     </div>

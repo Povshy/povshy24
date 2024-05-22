@@ -5,6 +5,7 @@ const router = express.Router()
 
 const { User } = require('../class/user')
 const { Session } = require('../class/session')
+const { Finance } = require('../class/finance')
 
 // ================================================================
 
@@ -144,6 +145,36 @@ router.post('/signin', function (req, res) {
 })
 
 // ================
+router.post('/recovery', function (req, res) {
+  try {
+    const { email } = req.body
+
+    if (!email) {
+      return res.status(400).json({
+        message: 'Потрібно передати email',
+      })
+    }
+
+    const control = User.getByEmailConfirm(email)
+    console.log(`ccccccccccc`, control)
+
+    if (!control) {
+      return res.status(400).json({
+        message: 'Користувача не знайдено',
+      })
+    }
+
+    return res.status(200).json({
+      id: control.id,
+      message: 'Код відправлено',
+    })
+  } catch (error) {
+    return res.status(400).json({
+      message: 'Recovery fuckin problem',
+    })
+  }
+})
+// ===========
 router.get('/balance', function (req, res) {
   const { id } = req.query
 

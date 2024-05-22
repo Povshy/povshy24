@@ -8,8 +8,6 @@ import Title from "../../component/title";
 import Field from "../../component/field";
 import BackButton from "../../component/back-button";
 
-import { saveSession } from "../../script/session";
-
 import { useParams } from "react-router-dom";
 
 const initialState = {

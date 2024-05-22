@@ -62,7 +62,7 @@ function App() {
               }
             />
             <Route
-              path="/recovery-confirm"
+              path="/recovery-confirm/:id"
               element={
                 <AuthRoute>
                   <RecoveryConfirmPage />
