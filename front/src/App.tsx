@@ -1,4 +1,8 @@
-import { useState, useReducer, createContext } from "react";
+import React from "react";
+import { AuthProvider } from "./script/AuthContext";
+import AuthRoute from "./script/AuthRoute";
+import PrivateRoute from "./script/PrivateRoute";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import WellcomePage from "./container/wellcome-page";
 import SignupPage from "./container/signup-page";
@@ -11,24 +15,80 @@ import SettingsPage from "./container/settings-page";
 
 import "./App.css";
 
-const AuthContext = createContext(null);
-
 function App() {
   return (
-    <div className="page">
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<WellcomePage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/signin" element={<SigninPage />} />
-          <Route path="/signup-confirm/:id" element={<SignupConfirmPage />} />
-          <Route path="/recovery" element={<RecoveryPage />} />
-          <Route path="/recovery-confirm" element={<RecoveryConfirmPage />} />
-          <Route path="/balance/:id" element={<BalancePage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <AuthProvider>
+      <div className="page">
+        <BrowserRouter>
+          <Routes>
+            <Route
+              index
+              element={
+                <AuthRoute>
+                  <WellcomePage />
+                </AuthRoute>
+              }
+            />
+            <Route
+              path="/signup"
+              element={
+                <AuthRoute>
+                  <SignupPage />
+                </AuthRoute>
+              }
+            />
+            <Route
+              path="/signin"
+              element={
+                <AuthRoute>
+                  <SigninPage />
+                </AuthRoute>
+              }
+            />
+            <Route
+              path="/signup-confirm/:id"
+              element={
+                <AuthRoute>
+                  <SignupConfirmPage />
+                </AuthRoute>
+              }
+            />
+            <Route
+              path="/recovery"
+              element={
+                <AuthRoute>
+                  <RecoveryPage />
+                </AuthRoute>
+              }
+            />
+            <Route
+              path="/recovery-confirm"
+              element={
+                <AuthRoute>
+                  <RecoveryConfirmPage />
+                </AuthRoute>
+              }
+            />
+            <Route
+              path="/balance/:id"
+              element={
+                <PrivateRoute>
+                  <BalancePage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <PrivateRoute>
+                  <SettingsPage />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </AuthProvider>
   );
 }
 

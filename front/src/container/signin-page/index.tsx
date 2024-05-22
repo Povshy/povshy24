@@ -1,6 +1,7 @@
-import { useState, useReducer } from "react";
+import { useState, useReducer, useContext } from "react";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
+import { AuthContext, actionTypes } from "../../script/AuthContext";
 
 import Button from "../../component/button";
 import Title from "../../component/title";
@@ -35,6 +36,7 @@ const reducer = (state: State, action: Action): State => {
 
 const SigninPage: React.FC = () => {
   const navigate = useNavigate();
+  const { dispatch: authDispatch } = useContext(AuthContext);
 
   const [errorData, setErrorData] = useState<string | null>(null);
 
@@ -54,7 +56,6 @@ const SigninPage: React.FC = () => {
       });
 
       if (!res.ok) {
-        // alert("Не всі поля введені коректно");
         const errorData = await res.json();
         setErrorData(errorData.message);
         throw new Error(errorData.message);
@@ -62,6 +63,17 @@ const SigninPage: React.FC = () => {
 
       const data = await res.json();
       console.log(data);
+
+      authDispatch({
+        type: actionTypes.LOGIN,
+        payload: {
+          token: data.session.token,
+          user: data.session.user,
+        },
+      });
+
+      localStorage.setItem("token", data.session.token);
+      localStorage.setItem("user", JSON.stringify(data.session.user));
 
       navigate(`/balance/${data.id}`);
     } catch (error: any) {
