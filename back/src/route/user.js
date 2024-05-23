@@ -175,12 +175,144 @@ router.post('/recovery', function (req, res) {
   }
 })
 // ===========
-router.get('/balance', function (req, res) {
-  const { id } = req.query
 
-  return res.status(200).json({
-    message: 'Вхід виконаний успішно',
-  })
+router.post('/recovery-confirm', function (req, res) {
+  try {
+    const { code, id, password } = req.body
+
+    console.log(`User id:`, id)
+    console.log(`Code:`, code)
+
+    if (!code || !id || !password) {
+      return res.status(400).json({
+        message:
+          'Потрібно передати всі дані для зміни паролю',
+      })
+    }
+
+    const user = User.getByIdConfirm(id)
+
+    if (!user) {
+      return res.status(404).json({
+        message: 'Користувача з таким ID не знайдено',
+      })
+    }
+
+    console.log('Знайдений користувач:', user)
+
+    if (code !== id) {
+      return res.status(400).json({
+        message: 'Неправильний код підтвердження',
+      })
+    }
+
+    user.password = password
+
+    const session = Session.create(user)
+
+    if (!user) {
+      return res.status(400).json({
+        message: 'Користувача не знайдено',
+      })
+    }
+
+    return res.status(200).json({
+      id: user.id,
+      message: 'Пароль успішно змінено',
+      session,
+    })
+  } catch (error) {
+    console.error('Помилка:', error)
+    return res.status(400).json({
+      message: 'Виникла помилка при обробці запиту',
+    })
+  }
+})
+
+// ================
+router.get('/balance', function (req, res) {
+  try {
+    const { id } = req.query
+
+    const user = User.getByIdConfirm(id)
+
+    if (!user) {
+      return res.status(400).json({
+        message: 'Користувача не знайдено',
+      })
+    }
+
+    return res.status(200).json({
+      message: 'Вхід виконаний успішно',
+      balance: user.balance,
+      email: user.email,
+    })
+  } catch (error) {
+    console.error('Помилка:', error)
+    return res.status(400).json({
+      message: 'Виникла помилка при обробці запиту',
+    })
+  }
+})
+// ================
+router.post('/change-email', function (req, res) {
+  try {
+    const { id, email, password } = req.body
+
+    const user = User.getByIdConfirm(id)
+
+    if (!user) {
+      return res.status(400).json({
+        message: 'Користувача не знайдено',
+      })
+    }
+
+    if (user.password !== password) {
+      return res.status(400).json({
+        message: 'Невірний пароль',
+      })
+    }
+
+    user.email = email
+    return res.status(200).json({
+      message: 'Email успішно змінено',
+    })
+  } catch (error) {
+    console.error('Помилка:', error)
+    return res.status(400).json({
+      message: 'Виникла помилка при обробці запиту',
+    })
+  }
+})
+// ================
+router.post('/change-password', function (req, res) {
+  try {
+    const { id, oldPassword, newPassword } = req.body
+
+    const user = User.getByIdConfirm(id)
+
+    if (!user) {
+      return res.status(400).json({
+        message: 'Користувача не знайдено',
+      })
+    }
+
+    if (user.password !== oldPassword) {
+      return res.status(400).json({
+        message: 'Невірний старий пароль',
+      })
+    }
+
+    user.password = newPassword
+    return res.status(200).json({
+      message: 'Пароль успішно змінено',
+    })
+  } catch (error) {
+    console.error('Помилка:', error)
+    return res.status(400).json({
+      message: 'Виникла помилка при обробці запиту',
+    })
+  }
 })
 // ================
 

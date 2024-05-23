@@ -7,10 +7,6 @@
     color: white;
     font-size: 34px;
     font-weight: bold;
-
-    & span {
-      font-weight: 400;
-    }
   }
 }
 
@@ -31,6 +27,10 @@
   justify-content: space-between;
   padding: 70px 20px 0 20px;
   width: 100%;
+
+  & a {
+    cursor: pointer;
+  }
 
   & p {
     font-size: 16px;
@@ -65,5 +65,6 @@
     position: relative;
     z-index: 1;
     box-shadow: 0px 0px 0px 10px rgb(227, 239, 247);
+    cursor: pointer;
   }
 }
