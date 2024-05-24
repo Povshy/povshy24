@@ -255,6 +255,12 @@ router.get('/balance', function (req, res) {
   }
 })
 // ================
+router.get('/settings', function (req, res) {
+  return res.status(200).json({
+    message: 'Налаштування',
+  })
+})
+// ================
 router.post('/change-email', function (req, res) {
   try {
     const { id, email, password } = req.body

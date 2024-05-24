@@ -51,94 +51,99 @@ const SettingsPage: React.FC = () => {
   const [errorData, setErrorData] = useState<string | null>(null);
 
   const [state, dispatch] = useReducer(reducer, initialState);
-// -------------------------------------
-const handleEmailChange = async () => {
-  try {
-    const userString = localStorage.getItem("user");
-    if (!userString) {
-      throw new Error("Користувача не знайдено");
+  // -------------------------------------
+  const handleEmailChange = async () => {
+    try {
+      const userString = localStorage.getItem("user");
+      if (!userString) {
+        throw new Error("Користувача не знайдено");
+      }
+      const user = JSON.parse(userString);
+
+      const res = await fetch(`http://localhost:4000/change-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: user.id,
+          email: state.email,
+          password: state.password,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message);
+      }
+
+      const data = await res.json();
+
+      // Оновлення email в локальному сховищі та контексті
+      user.email = state.email;
+      localStorage.setItem("user", JSON.stringify(user));
+
+      authDispatch({
+        type: actionTypes.LOGIN,
+        payload: {
+          token: localStorage.getItem("token"),
+          user,
+        },
+      });
+
+      dispatch({ type: "SET_EMAIL", payload: "" });
+      dispatch({ type: "SET_PASSWORD", payload: "" });
+
+      setErrorData(null);
+      alert(data.message);
+    } catch (error: any) {
+      setErrorData(error.message);
     }
-    const user = JSON.parse(userString);
+  };
+  // -------------------------------------
+  const handlePasswordChange = async () => {
+    try {
+      const userString = localStorage.getItem("user");
+      if (!userString) {
+        throw new Error("Користувача не знайдено");
+      }
+      const user = JSON.parse(userString);
 
-    const res = await fetch(`http://localhost:4000/change-email`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: user.id,
-        email: state.email,
-        password: state.password,
-      }),
-    });
+      const res = await fetch(`http://localhost:4000/change-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: user.id,
+          oldPassword: state.oldPassword,
+          newPassword: state.newPassword,
+        }),
+      });
 
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message);
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message);
+      }
+
+      const data = await res.json();
+
+      dispatch({ type: "SET_OLD_PASSWORD", payload: "" });
+      dispatch({ type: "SET_NEW_PASSWORD", payload: "" });
+      setErrorData(null);
+      alert(data.message);
+    } catch (error: any) {
+      setErrorData(error.message);
     }
-
-    const data = await res.json();
-    
-    // Оновлення email в локальному сховищі та контексті
-    user.email = state.email;
-    localStorage.setItem("user", JSON.stringify(user));
-
-    authDispatch({
-      type: actionTypes.LOGIN,
-      payload: {
-        token: localStorage.getItem("token"),
-        user,
-      },
-    });
-
-
-    setErrorData(null);
-    alert(data.message);
-  } catch (error: any) {
-    setErrorData(error.message);
-  }
-};
-// -------------------------------------
-const handlePasswordChange = async () => {
-  try {
-    const userString = localStorage.getItem("user");
-    if (!userString) {
-      throw new Error("Користувача не знайдено");
-    }
-    const user = JSON.parse(userString);
-
-    const res = await fetch(`http://localhost:4000/change-password`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: user.id,
-        oldPassword: state.oldPassword,
-        newPassword: state.newPassword,
-      }),
-    });
-
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message);
-    }
-
-    const data = await res.json();
-    setErrorData(null);
-    alert(data.message);
-  } catch (error: any) {
-    setErrorData(error.message);
-  }
-};
-// -------------------------------------
-const handleLogout = () => {
-  authDispatch({ type: actionTypes.LOGOUT });
-  localStorage.removeItem("token");
-  localStorage.removeItem("user");
-  navigate("/");
-};
-// -------------------------------------
+  };
+  // -------------------------------------
+  const handleLogout = () => {
+    authDispatch({ type: actionTypes.LOGOUT });
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/");
+  };
+  // -------------------------------------
 
   return (
     <div>
@@ -151,7 +156,9 @@ const handleLogout = () => {
             type="email"
             placeholder="Enter your email ..."
             value={state.email}
-            onChange={(e) => dispatch({ type: "SET_EMAIL", payload: e.target.value })}
+            onChange={(e) =>
+              dispatch({ type: "SET_EMAIL", payload: e.target.value })
+            }
             label="New Email:"
           />
 
@@ -159,7 +166,9 @@ const handleLogout = () => {
             type="password"
             placeholder="Enter your password ..."
             value={state.password}
-            onChange={(e) => dispatch({ type: "SET_PASSWORD", payload: e.target.value })}
+            onChange={(e) =>
+              dispatch({ type: "SET_PASSWORD", payload: e.target.value })
+            }
             label="Password:"
           />
           <div>
@@ -175,7 +184,9 @@ const handleLogout = () => {
             type="password"
             placeholder="Enter your old email ..."
             value={state.oldPassword}
-            onChange={(e) => dispatch({ type: "SET_OLD_PASSWORD", payload: e.target.value })}
+            onChange={(e) =>
+              dispatch({ type: "SET_OLD_PASSWORD", payload: e.target.value })
+            }
             label="Old Password:"
           />
 
@@ -183,7 +194,9 @@ const handleLogout = () => {
             type="password"
             placeholder="Enter your password ..."
             value={state.newPassword}
-            onChange={(e) => dispatch({ type: "SET_NEW_PASSWORD", payload: e.target.value })}
+            onChange={(e) =>
+              dispatch({ type: "SET_NEW_PASSWORD", payload: e.target.value })
+            }
             label="New Password:"
           />
           <div>
