@@ -12,6 +12,7 @@ import RecoveryPage from "./container/recovery-page";
 import RecoveryConfirmPage from "./container/recovery-confirm-page";
 import BalancePage from "./container/balance";
 import SettingsPage from "./container/settings-page";
+import RecivePage from "./container/recive-page";
 
 import "./App.css";
 
@@ -82,6 +83,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <SettingsPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/recive"
+              element={
+                <PrivateRoute>
+                  <RecivePage />
                 </PrivateRoute>
               }
             />

@@ -1,15 +1,32 @@
 .input-block {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .input {
-    border: 1px solid #939199;
-    border-radius: 12px;
-    padding: 20px 16px;
-    width: 353px;
-    height: 56px;
-    background-color: white;
+  border: 1px solid #939199;
+  border-radius: 12px;
+  padding: 20px 16px;
+  width: 353px;
+  height: 56px;
+  background-color: white;
+}
+
+.dollar-prefix {
+  position: absolute;
+  left: 16px; /* відстань від лівого краю поля вводу */
+  color: #000;
+  font-weight: bold;
+}
+
+.dollar {
+  padding-left: 35px;
 }

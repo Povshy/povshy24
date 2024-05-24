@@ -71,7 +71,7 @@ const BalancePage: React.FC = () => {
 
       <div className="balance-buttons">
         <div className="todo-button">
-          <a href="#">
+          <a onClick={() => navigate(`/recive`)}>
             <img src="/svg/receive.svg" alt="receive" />
           </a>
           <p>Receive</p>

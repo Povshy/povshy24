@@ -8,6 +8,7 @@ interface FieldProps {
   value?: string | number;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   label: string;
+  dollar?: boolean;
 }
 
 const Field: React.FC<FieldProps> = ({
@@ -16,18 +17,23 @@ const Field: React.FC<FieldProps> = ({
   value,
   onChange,
   label,
+  dollar,
 }) => {
   return (
     <div className="input-block">
       <label>{label}</label>
-      <input
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        className="input"
-      />
+      <div className="input-wrapper">
+        {dollar && <span className="dollar-prefix">$:</span>}
+        <input
+          type={type}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          className={`input ${dollar ? "dollar" : ""}`}
+        />
+      </div>
     </div>
+    
   );
 };
 
