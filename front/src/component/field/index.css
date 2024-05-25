@@ -22,7 +22,7 @@
 
 .dollar-prefix {
   position: absolute;
-  left: 16px; /* відстань від лівого краю поля вводу */
+  left: 16px;
   color: #000;
   font-weight: bold;
 }

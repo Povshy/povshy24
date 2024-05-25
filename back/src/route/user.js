@@ -236,6 +236,11 @@ router.get('/balance', function (req, res) {
 
     const user = User.getByIdConfirm(id)
 
+    const transactions = Finance.getTransactions(user.email)
+
+    console.log('!!!!!!!!!!!!!!', transactions)
+    console.log('BALANCE', user.balance)
+
     if (!user) {
       return res.status(400).json({
         message: 'Користувача не знайдено',
@@ -246,6 +251,7 @@ router.get('/balance', function (req, res) {
       message: 'Вхід виконаний успішно',
       balance: user.balance,
       email: user.email,
+      transactions,
     })
   } catch (error) {
     console.error('Помилка:', error)
@@ -312,6 +318,37 @@ router.post('/change-password', function (req, res) {
     user.password = newPassword
     return res.status(200).json({
       message: 'Пароль успішно змінено',
+    })
+  } catch (error) {
+    console.error('Помилка:', error)
+    return res.status(400).json({
+      message: 'Виникла помилка при обробці запиту',
+    })
+  }
+})
+// ================
+router.post('/recive', function (req, res) {
+  try {
+    const { user, amount, name } = req.body
+
+    const userMoney = User.getByIdConfirm(user.id)
+    const newAmount = Number(amount)
+
+    if (!userMoney) {
+      return res.status(400).json({
+        message: 'Користувача не знайдено',
+      })
+    }
+
+    const deposit = Finance.deposit(user, newAmount, name)
+
+    console.log('!!!!!!!!!!!!!!!', deposit)
+
+    const newBalance = deposit
+
+    return res.status(200).json({
+      message: 'Рахунок успішно поповнено!',
+      newBalance: newBalance,
     })
   } catch (error) {
     console.error('Помилка:', error)

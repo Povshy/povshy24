@@ -1,4 +1,4 @@
-import { useState, useReducer, useContext } from "react";
+import { useState, useReducer, useContext, useEffect } from "react";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import { AuthContext, actionTypes } from "../../script/AuthContext";
@@ -18,35 +18,20 @@ import ether_logo from "./ether.svg";
 import busd_logo from "./busd.svg";
 
 const initialState = {
-  email: "",
-  password: "",
-  oldPassword: "",
-  newPassword: "",
+  amount: "",
 };
 
 interface State {
-  email: string;
-  password: string;
-  oldPassword: string;
-  newPassword: string;
+  amount: string;
 }
 
-type Action =
-  | { type: "SET_EMAIL"; payload: string }
-  | { type: "SET_PASSWORD"; payload: string }
-  | { type: "SET_OLD_PASSWORD"; payload: string }
-  | { type: "SET_NEW_PASSWORD"; payload: string };
+type Action = { type: "SET_AMOUNT"; payload: string };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
-    case "SET_EMAIL":
-      return { ...state, email: action.payload };
-    case "SET_PASSWORD":
-      return { ...state, password: action.payload };
-    case "SET_OLD_PASSWORD":
-      return { ...state, oldPassword: action.payload };
-    case "SET_NEW_PASSWORD":
-      return { ...state, newPassword: action.payload };
+    case "SET_AMOUNT":
+      return { ...state, amount: action.payload };
+
     default:
       return state;
   }
@@ -54,11 +39,57 @@ const reducer = (state: State, action: Action): State => {
 
 const RecivePage: React.FC = () => {
   const navigate = useNavigate();
-  const { dispatch: authDispatch } = useContext(AuthContext);
 
   const [errorData, setErrorData] = useState<string | null>(null);
-
+  const [balance, setBalance] = useState<number | null>(null);
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    const userString = localStorage.getItem("user");
+    if (userString) {
+      const user = JSON.parse(userString);
+      setBalance(user.balance); // Встановлюємо початкове значення балансу
+    }
+  }, []);
+
+  const handleDeposit = async (name: string) => {
+    try {
+      const userString = localStorage.getItem("user");
+      if (!userString) {
+        throw new Error("Користувача не знайдено");
+      }
+      const user = JSON.parse(userString);
+
+      const res = await fetch(`http://localhost:4000/recive`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user: user,
+          amount: state.amount,
+          name,
+        }),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message);
+      }
+
+      const data = await res.json();
+
+      user.balance = data.newBalance; // Оновлюємо баланс користувача
+      localStorage.setItem("user", JSON.stringify(user));
+
+      setBalance(user.balance); // Оновлюємо стан балансу
+
+      setErrorData(null);
+      alert(data.message);
+    } catch (error: any) {
+      setErrorData(error.message);
+    }
+  };
 
   return (
     <div>
@@ -70,9 +101,9 @@ const RecivePage: React.FC = () => {
           <Field
             type="number"
             placeholder=""
-            value={state.email}
+            value={state.amount}
             onChange={(e) =>
-              dispatch({ type: "SET_EMAIL", payload: e.target.value })
+              dispatch({ type: "SET_AMOUNT", payload: e.target.value })
             }
             label=""
             dollar
@@ -83,7 +114,7 @@ const RecivePage: React.FC = () => {
 
         <h2>Payment system</h2>
 
-        <Box onClick={() => alert("Pay")}>
+        <Box onClick={() => handleDeposit("Stripe")}>
           <div className="payment-system">
             <div className="transaction__logo">
               <img src={stripe_logo} alt="icon" />
@@ -102,7 +133,7 @@ const RecivePage: React.FC = () => {
           </div>
         </Box>
 
-        <Box onClick={() => alert("Pay")}>
+        <Box onClick={() => handleDeposit("Coinbase")}>
           <div className="payment-system">
             <div className="transaction__logo">
               <img src={coinbase_logo} alt="icon" />

@@ -1,18 +1,22 @@
 class Finance {
   static #transactions = []
 
-  static deposit(user, amount) {
+  static deposit(user, amount, name) {
     user.balance += amount
     Finance.#transactions.push({
-      type: 'deposit',
-      userId: user.id,
+      type: 'Receipt',
+      userEmail: user.email,
       amount,
+      name,
+      date: new Date().toLocaleString(),
     })
     return user.balance
   }
 
   static transfer(sender, recipientEmail, amount) {
-    const recipient = User.getByEmail(recipientEmail)
+    const recipient =
+      User.getByEmailConfirm(recipientEmail) ||
+      recipientEmail
 
     if (!recipient) {
       throw new Error('Recipient not found')
@@ -26,10 +30,11 @@ class Finance {
     recipient.balance += amount
 
     Finance.#transactions.push({
-      type: 'transfer',
-      from: sender.id,
-      to: recipient.id,
+      type: 'Sending',
+      userEmail: sender.email,
+      name: recipient.email,
       amount,
+      date: new Date().toLocaleString(),
     })
 
     return {
@@ -38,8 +43,10 @@ class Finance {
     }
   }
 
-  static getTransactions() {
-    return Finance.#transactions
+  static getTransactions(userEmail) {
+    return Finance.#transactions.filter(
+      (item) => item.userEmail === userEmail,
+    )
   }
 }
 

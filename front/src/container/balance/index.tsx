@@ -7,6 +7,7 @@ const BalancePage: React.FC = () => {
 
   const [balance, setBalance] = useState<number | null>(null);
   const [email, setEmail] = useState<string | null>(null);
+  const [trans, setTrans] = useState<any[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,8 +23,7 @@ const BalancePage: React.FC = () => {
           throw new Error("ID користувача не вказано");
         }
 
-
-        const res = await fetch(`http://localhost:4000/balance?id=${user.id}`, { 
+        const res = await fetch(`http://localhost:4000/balance?id=${user.id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -38,19 +38,18 @@ const BalancePage: React.FC = () => {
         const data = await res.json();
         setBalance(data.balance);
         setEmail(data.email);
+        setTrans(data.transactions);
       } catch (error: any) {
         setError(error.message);
       }
     };
 
     fetchBalance();
-  }, []);
+  }, [balance]);
 
   if (error) {
     return <div className="error">{error}</div>;
   }
-
-  
 
   return (
     <div className="balance-page">
@@ -64,9 +63,7 @@ const BalancePage: React.FC = () => {
             <img src="/svg/bell.svg" alt="bell" />
           </a>
         </div>
-        <h1>
-          $ {balance}
-        </h1>
+        <h1>$ {balance}</h1>
       </div>
 
       <div className="balance-buttons">
@@ -83,6 +80,21 @@ const BalancePage: React.FC = () => {
           </a>
           <p>Send</p>
         </div>
+      </div>
+      <div className="transactions">
+        {trans ? (
+          trans.map((transaction, index) => (
+            <div key={index} className="transaction">
+              <p>{transaction.date}</p>
+              <p>{transaction.type}</p>
+              <p>{transaction.userEmail}</p>
+              <p>{transaction.name}</p>
+              <p>{transaction.amount}</p>
+            </div>
+          ))
+        ) : (
+          <p>No transactions available.</p>
+        )}
       </div>
     </div>
   );
