@@ -98,11 +98,10 @@ const BalancePage: React.FC = () => {
             .reverse()
             .map((transaction, index) => (
               <div key={index} className="transaction__item">
-                <img
-                  src={logoMap[transaction.name]}
-                  alt={transaction.name}
-                  className="transaction__logo"
-                />
+                <div className="transaction__logo">
+                  <img src={logoMap[transaction.name]} alt={transaction.name} />
+                </div>
+
                 <div className="transaction__info">
                   <h2 className="transaction__name">{transaction.name}</h2>
                   <span className="trans__date">

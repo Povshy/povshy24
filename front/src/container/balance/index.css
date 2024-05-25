@@ -92,7 +92,7 @@
 .transaction__info {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 10px;
 }
 
 .transaction__name {
