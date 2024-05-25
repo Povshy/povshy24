@@ -79,8 +79,11 @@ const RecivePage: React.FC = () => {
 
       const data = await res.json();
 
+      dispatch({ type: "SET_AMOUNT", payload: "" });
+
       user.balance = data.newBalance; // Оновлюємо баланс користувача
       localStorage.setItem("user", JSON.stringify(user));
+      console.log("AFTER_RECIVE_USER", user);
 
       setBalance(user.balance); // Оновлюємо стан балансу
 

@@ -239,7 +239,7 @@ router.get('/balance', function (req, res) {
     const transactions = Finance.getTransactions(user.email)
 
     console.log('!!!!!!!!!!!!!!', transactions)
-    console.log('BALANCE', user.balance)
+    console.log('BALANCE', user)
 
     if (!user) {
       return res.status(400).json({
@@ -340,9 +340,19 @@ router.post('/recive', function (req, res) {
       })
     }
 
-    const deposit = Finance.deposit(user, newAmount, name)
+    if (!amount) {
+      return res.status(400).json({
+        message: 'Введіть суму!',
+      })
+    }
 
-    console.log('!!!!!!!!!!!!!!!', deposit)
+    const deposit = Finance.deposit(
+      userMoney,
+      newAmount,
+      name,
+    )
+
+    console.log('DEPOSIT INFO', deposit)
 
     const newBalance = deposit
 

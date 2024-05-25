@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
 
+import stripe_logo from "./stripe.svg";
+import coinbase_logo from "./coinbase.svg";
+
 const BalancePage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -39,17 +42,24 @@ const BalancePage: React.FC = () => {
         setBalance(data.balance);
         setEmail(data.email);
         setTrans(data.transactions);
+
+        console.log("BALANCE_USER", user);
       } catch (error: any) {
         setError(error.message);
       }
     };
 
     fetchBalance();
-  }, [balance]);
+  }, []);
 
   if (error) {
     return <div className="error">{error}</div>;
   }
+
+  const logoMap: { [key: string]: string } = {
+    Stripe: stripe_logo, // Вставте URL логотипу
+    Coinbase: coinbase_logo, // Вставте URL логотипу
+  };
 
   return (
     <div className="balance-page">
@@ -83,15 +93,34 @@ const BalancePage: React.FC = () => {
       </div>
       <div className="transactions">
         {trans ? (
-          trans.map((transaction, index) => (
-            <div key={index} className="transaction">
-              <p>{transaction.date}</p>
-              <p>{transaction.type}</p>
-              <p>{transaction.userEmail}</p>
-              <p>{transaction.name}</p>
-              <p>{transaction.amount}</p>
-            </div>
-          ))
+          trans
+            .slice()
+            .reverse()
+            .map((transaction, index) => (
+              <div key={index} className="transaction__item">
+                <img
+                  src={logoMap[transaction.name]}
+                  alt={transaction.name}
+                  className="transaction__logo"
+                />
+                <div className="transaction__info">
+                  <h2 className="transaction__name">{transaction.name}</h2>
+                  <span className="trans__date">
+                    {transaction.date} --- {transaction.type}
+                  </span>
+                </div>
+
+                {transaction.type === "Receipt" ? (
+                  <div className="transaction__plus">
+                    +${transaction.amount}
+                  </div>
+                ) : (
+                  <div className="transaction__minus">
+                    -${transaction.amount}
+                  </div>
+                )}
+              </div>
+            ))
         ) : (
           <p>No transactions available.</p>
         )}
