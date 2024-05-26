@@ -4,6 +4,7 @@ import "./index.css";
 
 import stripe_logo from "./stripe.svg";
 import coinbase_logo from "./coinbase.svg";
+import send_logo from "./send.svg";
 
 const BalancePage: React.FC = () => {
   const navigate = useNavigate();
@@ -58,7 +59,8 @@ const BalancePage: React.FC = () => {
 
   const logoMap: { [key: string]: string } = {
     Stripe: stripe_logo, // Вставте URL логотипу
-    Coinbase: coinbase_logo, // Вставте URL логотипу
+    Coinbase: coinbase_logo,
+    Sending: send_logo,
   };
 
   return (
@@ -85,7 +87,7 @@ const BalancePage: React.FC = () => {
         </div>
 
         <div className="todo-button">
-          <a href="#">
+          <a onClick={() => navigate(`/send`)}>
             <img src="/svg/send.svg" alt="send" />
           </a>
           <p>Send</p>

@@ -1,3 +1,5 @@
+const { User } = require('./user')
+
 class Finance {
   static #transactions = []
 
@@ -14,25 +16,26 @@ class Finance {
   }
 
   static transfer(sender, recipientEmail, amount) {
-    const recipient =
-      User.getByEmailConfirm(recipientEmail) ||
-      recipientEmail
+    const recipient = User.getByEmailConfirm(recipientEmail)
 
     if (!recipient) {
-      throw new Error('Recipient not found')
+      throw new Error('Такий отримувач не знайдений')
     }
 
     if (sender.balance < amount) {
-      throw new Error('Insufficient funds')
+      throw new Error('Не достатньо коштів')
     }
 
     sender.balance -= amount
     recipient.balance += amount
 
+    sender.save()
+    recipient.save()
+
     Finance.#transactions.push({
       type: 'Sending',
       userEmail: sender.email,
-      name: recipient.email,
+      name: recipientEmail,
       amount,
       date: new Date().toLocaleString(),
     })

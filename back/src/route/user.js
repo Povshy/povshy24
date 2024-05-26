@@ -368,6 +368,50 @@ router.post('/recive', function (req, res) {
   }
 })
 // ================
+// ================
+router.post('/send', function (req, res) {
+  try {
+    const { user, amount, name } = req.body
+
+    console.log('SENDING_BODY', req.body)
+
+    const userMoney = User.getByIdConfirm(user.id)
+    const newAmount = Number(amount)
+
+    if (!userMoney) {
+      return res.status(400).json({
+        message: 'Користувача не знайдено',
+      })
+    }
+
+    if (!amount || !name) {
+      return res.status(400).json({
+        message: 'Введіть всі дані!',
+      })
+    }
+
+    const transfer = Finance.transfer(
+      userMoney,
+      name,
+      newAmount,
+    )
+
+    console.log('TRANSFER INFO', transfer)
+
+    const newBalance = transfer.senderBalance
+
+    return res.status(200).json({
+      message: 'Кошти успішно відправлено!',
+      newBalance: newBalance,
+    })
+  } catch (error) {
+    console.error('Помилка:', error)
+    return res.status(400).json({
+      message: 'Виникла помилка при обробці запиту',
+    })
+  }
+})
+// ================
 
 // Підключаємо роутер до бек-енду
 module.exports = router

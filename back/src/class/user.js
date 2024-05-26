@@ -66,6 +66,24 @@ class User {
     const code = Math.floor(10000 + Math.random() * 90000)
     return code
   }
+
+  save() {
+    // Оновлюємо користувача в основному списку
+    const index = User.#list.findIndex(
+      (item) => item.id === this.id,
+    )
+    if (index !== -1) {
+      User.#list[index] = this
+    }
+
+    // Оновлюємо користувача в підтвердженому списку
+    const confirmIndex = User.#confirmList.findIndex(
+      (item) => item.id === this.id,
+    )
+    if (confirmIndex !== -1) {
+      User.#confirmList[confirmIndex] = this
+    }
+  }
 }
 
 module.exports = {
