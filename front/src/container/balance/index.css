@@ -110,3 +110,9 @@
   font-weight: 700;
   color: rgb(19, 171, 100);
 }
+
+.transaction__minus {
+  font-size: 16px;
+  font-weight: 700;
+  color: #d23b3b;
+}

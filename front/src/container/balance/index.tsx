@@ -63,6 +63,13 @@ const BalancePage: React.FC = () => {
     Sending: send_logo,
   };
 
+  const getLogo = (transaction: { type: string; name: string }) => {
+    if (transaction.type === "Sending") {
+      return logoMap.Sending;
+    }
+    return logoMap[transaction.name]; // Вставте URL логотипу за замовчуванням
+  };
+
   return (
     <div className="balance-page">
       <div className="header">
@@ -101,7 +108,7 @@ const BalancePage: React.FC = () => {
             .map((transaction, index) => (
               <div key={index} className="transaction__item">
                 <div className="transaction__logo">
-                  <img src={logoMap[transaction.name]} alt={transaction.name} />
+                  <img src={getLogo(transaction)} alt={transaction.name} />
                 </div>
 
                 <div className="transaction__info">
