@@ -261,11 +261,36 @@ router.get('/balance', function (req, res) {
   }
 })
 // ================
-router.get('/settings', function (req, res) {
-  return res.status(200).json({
-    message: 'Налаштування',
-  })
+router.get('/transaction', function (req, res) {
+  try {
+    const { id } = req.query
+
+    console.log('TTTTTTTTTTTTTTransaction found:', id) // Додано для відладки
+
+    const transaction = Finance.getById(id)
+
+    if (!transaction) {
+      return res.status(400).json({
+        message: 'Не знайдено трансакцію',
+      })
+    }
+
+    console.log(
+      'TTTTTTTTTTTTTTransaction found:',
+      transaction,
+    ) // Додано для відладки
+    return res.status(200).json({
+      message: 'Дані трансакції',
+      transaction: transaction,
+    })
+  } catch (error) {
+    console.error('Пrrrrrrrrrrrrrrrrомилка:', error)
+    return res.status(400).json({
+      message: 'Виникла помилка при обробці запиту',
+    })
+  }
 })
+
 // ================
 router.post('/change-email', function (req, res) {
   try {

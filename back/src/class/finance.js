@@ -58,7 +58,7 @@ class Finance {
 
   static getById(id) {
     return Finance.#transactions.find(
-      (item) => item.id === id,
+      (item) => item.id == id,
     )
   }
 }

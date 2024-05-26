@@ -67,14 +67,10 @@ const BalancePage: React.FC = () => {
     if (transaction.type === "Sending") {
       return logoMap.Sending;
     }
-    return logoMap[transaction.name]; // Вставте URL логотипу за замовчуванням
+    return logoMap[transaction.name];
   };
 
-  const isReceipt = (transaction: {
-    type: string;
-    userEmail: string;
-    name: string;
-  }) => {
+  const isReceipt = (transaction: { type: string; name: string }) => {
     return (
       transaction.type === "Receipt" ||
       (transaction.type === "Sending" && transaction.name === email)
