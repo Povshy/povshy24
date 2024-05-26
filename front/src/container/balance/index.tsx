@@ -70,6 +70,17 @@ const BalancePage: React.FC = () => {
     return logoMap[transaction.name]; // Вставте URL логотипу за замовчуванням
   };
 
+  const isReceipt = (transaction: {
+    type: string;
+    userEmail: string;
+    name: string;
+  }) => {
+    return (
+      transaction.type === "Receipt" ||
+      (transaction.type === "Sending" && transaction.name === email)
+    );
+  };
+
   return (
     <div className="balance-page">
       <div className="header">
@@ -106,7 +117,11 @@ const BalancePage: React.FC = () => {
             .slice()
             .reverse()
             .map((transaction, index) => (
-              <div key={index} className="transaction__item">
+              <div
+                key={index}
+                className="transaction__item"
+                onClick={() => navigate(`/transaction/${transaction.id}`)}
+              >
                 <div className="transaction__logo">
                   <img src={getLogo(transaction)} alt={transaction.name} />
                 </div>
@@ -114,11 +129,12 @@ const BalancePage: React.FC = () => {
                 <div className="transaction__info">
                   <h2 className="transaction__name">{transaction.name}</h2>
                   <span className="trans__date">
-                    {transaction.date} --- {transaction.type}
+                    {transaction.date} ---{" "}
+                    {isReceipt(transaction) ? "Receipt" : transaction.type}
                   </span>
                 </div>
 
-                {transaction.type === "Receipt" ? (
+                {isReceipt(transaction) ? (
                   <div className="transaction__plus">
                     +${transaction.amount}
                   </div>

@@ -11,6 +11,7 @@ class Finance {
       amount,
       name,
       date: new Date().toLocaleString(),
+      id: User.generateCode(),
     })
     return user.balance
   }
@@ -38,6 +39,7 @@ class Finance {
       name: recipientEmail,
       amount,
       date: new Date().toLocaleString(),
+      id: User.generateCode(),
     })
 
     return {
@@ -48,7 +50,15 @@ class Finance {
 
   static getTransactions(userEmail) {
     return Finance.#transactions.filter(
-      (item) => item.userEmail === userEmail,
+      (item) =>
+        item.userEmail === userEmail ||
+        item.name === userEmail,
+    )
+  }
+
+  static getById(id) {
+    return Finance.#transactions.find(
+      (item) => item.id === id,
     )
   }
 }
