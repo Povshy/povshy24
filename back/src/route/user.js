@@ -243,9 +243,6 @@ router.get('/balance', function (req, res) {
 
     const transactions = Finance.getTransactions(user.email)
 
-    console.log('!!!!!!!!!!!!!!', transactions)
-    console.log('BALANCE', user)
-
     if (!user) {
       return res.status(400).json({
         message: 'Користувача не знайдено',
@@ -257,6 +254,34 @@ router.get('/balance', function (req, res) {
       balance: user.balance,
       email: user.email,
       transactions,
+    })
+  } catch (error) {
+    console.error('Помилка:', error)
+    return res.status(400).json({
+      message: 'Виникла помилка при обробці запиту',
+    })
+  }
+})
+// ================
+router.get('/notification', function (req, res) {
+  try {
+    const { id } = req.query
+
+    const user = User.getByIdConfirm(id)
+
+    const notifications = Notification.getById(user.id)
+
+    console.log('NNNNNNNNNNNNNN', notifications)
+
+    if (!user) {
+      return res.status(400).json({
+        message: 'Користувача не знайдено',
+      })
+    }
+
+    return res.status(200).json({
+      message: 'Список повідомлень',
+      notifications,
     })
   } catch (error) {
     console.error('Помилка:', error)
@@ -390,6 +415,11 @@ router.post('/recive', function (req, res) {
 
     const newBalance = deposit
     Notification.note_inTrans(userMoney)
+
+    console.log(
+      'nononononnono',
+      Notification.getById(userMoney.id),
+    )
 
     return res.status(200).json({
       message: 'Рахунок успішно поповнено!',

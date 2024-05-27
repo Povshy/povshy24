@@ -15,6 +15,7 @@ import SettingsPage from "./container/settings-page";
 import RecivePage from "./container/recive-page";
 import SendPage from "./container/send-page";
 import TransactionPage from "./container/transaction-page";
+import NotificationPage from "./container/notification-page";
 import Error from "./container/error-page";
 
 import "./App.css";
@@ -78,6 +79,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <BalancePage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/notification/:id"
+              element={
+                <PrivateRoute>
+                  <NotificationPage />
                 </PrivateRoute>
               }
             />

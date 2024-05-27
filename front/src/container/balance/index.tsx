@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { roundBalance } from "../../script/utils";
 import "./index.css";
 
+import { useParams } from "react-router-dom";
+
 import stripe_logo from "./stripe.svg";
 import coinbase_logo from "./coinbase.svg";
 import send_logo from "./send.svg";
 
 const BalancePage: React.FC = () => {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
 
   const [balance, setBalance] = useState<number | null>(null);
   const [email, setEmail] = useState<string | null>(null);
@@ -113,7 +116,7 @@ const BalancePage: React.FC = () => {
             <img src="/svg/settings.svg" alt="settings" />
           </a>
           <p>Профіль: {email}</p>
-          <a href="#">
+          <a onClick={() => navigate(`/notification/${id}`)}>
             <img src="/svg/bell.svg" alt="bell" />
           </a>
         </div>

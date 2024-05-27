@@ -5,7 +5,7 @@ class Notification {
     Notification.#notifications.push({
       type: 'New incoming transaction',
       name: 'Announcement',
-      time: new Date().toLocaleString(),
+      time: new Date().toISOString(),
       id: user.id,
     })
   }
@@ -14,7 +14,7 @@ class Notification {
     Notification.#notifications.push({
       type: 'New outgoing transaction',
       name: 'Announcement',
-      time: new Date().toLocaleString(),
+      time: new Date().toISOString(),
       id: user.id,
     })
   }
@@ -23,7 +23,7 @@ class Notification {
     Notification.#notifications.push({
       type: 'New Email change',
       name: 'Warning',
-      time: new Date().toLocaleString(),
+      time: new Date().toISOString(),
       id: user.id,
     })
   }
@@ -32,13 +32,13 @@ class Notification {
     Notification.#notifications.push({
       type: 'New Password change',
       name: 'Warning',
-      time: new Date().toLocaleString(),
+      time: new Date().toISOString(),
       id: user.id,
     })
   }
 
   static getById(id) {
-    return Notification.#notifications.find(
+    return Notification.#notifications.filter(
       (item) => item.id == id,
     )
   }
