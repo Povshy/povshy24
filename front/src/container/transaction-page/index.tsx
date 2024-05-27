@@ -36,6 +36,7 @@ const TransactionPage: React.FC = () => {
 
           const data = await res.json();
           setTransaction(data.transaction);
+          console.log("Transaction data received:", data);
           console.log("Transaction data received:", data); // Додано для відладки
         } catch (error: any) {
           console.error("Error fetching transaction:", error.message); // Додано для відладки
@@ -46,6 +47,47 @@ const TransactionPage: React.FC = () => {
     fetchTransaction();
   }, [id]);
 
+  const userString = localStorage.getItem("user");
+  if (!userString) {
+    throw new Error("Користувача не знайдено");
+  }
+
+  const user = JSON.parse(userString);
+
+  const isReceipt = (transaction: { type: string; name: string }) => {
+    return (
+      transaction.type === "Receipt" ||
+      (transaction.type === "Sending" && transaction.name === user.email)
+    );
+  };
+
+  const formatDate = (dateString: string) => {
+    const [datePart, timePart] = dateString.split(", ");
+    const [day, month, year] = datePart.split(".");
+    const date = new Date(`${year}-${month}-${day}T${timePart}`);
+
+    if (isNaN(date.getTime())) {
+      console.error("Invalid date:", dateString);
+      return "Invalid Date";
+    }
+
+    const dateOptions: Intl.DateTimeFormatOptions = {
+      month: "short",
+      day: "2-digit",
+    };
+
+    const timeOptions: Intl.DateTimeFormatOptions = {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false, // 24-hour format
+    };
+
+    const formattedDate = date.toLocaleDateString("en-US", dateOptions);
+    const formattedTime = date.toLocaleTimeString("en-US", timeOptions);
+
+    return `${formattedDate.replace(",", "")}, ${formattedTime}`;
+  };
+
   return (
     <div>
       <BackButton />
@@ -55,10 +97,28 @@ const TransactionPage: React.FC = () => {
           <p className="error-message">{error}</p>
         ) : transaction ? (
           <div className="transaction-details">
-            <p>Amount: ${transaction.amount}</p>
-            <p>Type: {transaction.type}</p>
-            <p>Name: {transaction.name}</p>
-            <p>Date: {transaction.date}</p>
+            {isReceipt(transaction) ? (
+              <div className="amount__plus">+${transaction.amount}</div>
+            ) : (
+              <div className="amount__minus">-${transaction.amount}</div>
+            )}
+
+            <div className="transaction-info">
+              <div className="transaction-value">
+                <p>Date:</p>
+                <p>{formatDate(transaction.date)}</p>
+              </div>
+              <hr className="line" />
+              <div className="transaction-value">
+                <p>Name:</p>
+                <p>{transaction.name}</p>
+              </div>
+              <hr className="line" />
+              <div className="transaction-value">
+                <p>Type:</p>
+                <p>{transaction.type}</p>
+              </div>
+            </div>
           </div>
         ) : (
           <p>Loading...</p>
