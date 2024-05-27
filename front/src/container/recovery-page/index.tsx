@@ -53,6 +53,7 @@ const RecoveryPage: React.FC = () => {
 
       const data = await res.json();
       console.log(data);
+      console.log("Your code:", data.id);
 
       navigate(`/recovery-confirm/${data.id}`);
     } catch (error: any) {

@@ -62,6 +62,7 @@ const SignupPage: React.FC = () => {
 
       const data = await res.json();
       console.log(data);
+      console.log("Your code:", data.user.id);
 
       navigate(`/signup-confirm/${data.user.id}`);
     } catch (error: any) {

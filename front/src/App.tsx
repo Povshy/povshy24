@@ -15,6 +15,7 @@ import SettingsPage from "./container/settings-page";
 import RecivePage from "./container/recive-page";
 import SendPage from "./container/send-page";
 import TransactionPage from "./container/transaction-page";
+import Error from "./container/error-page";
 
 import "./App.css";
 
@@ -112,6 +113,7 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="*" element={<Error />} />
           </Routes>
         </BrowserRouter>
       </div>
