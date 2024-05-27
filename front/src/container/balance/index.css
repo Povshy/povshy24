@@ -74,6 +74,9 @@
   flex-direction: column;
   gap: 8px;
   margin: -70px 20px;
+  padding-right: 10px;
+  max-height: 530px;
+  overflow-y: auto;
 }
 
 .transaction__item {
