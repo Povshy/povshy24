@@ -17,8 +17,6 @@ class User {
     const newUser = new User(email, password)
     User.#list.push(newUser)
 
-    console.log(User.#list)
-
     return newUser
   }
 
@@ -36,12 +34,7 @@ class User {
     )
   }
 
-  static newUserConfirm(
-    email,
-    password,
-    balance = 2500,
-    id,
-  ) {
+  static newUserConfirm(email, password, balance = 2500) {
     const newUser = new User(email, password, balance)
     User.#confirmList.push(newUser)
 

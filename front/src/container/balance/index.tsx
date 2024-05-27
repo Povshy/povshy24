@@ -47,8 +47,6 @@ const BalancePage: React.FC = () => {
         setBalance(roundBalance(data.balance));
         setEmail(data.email);
         setTrans(data.transactions);
-
-        console.log("BALANCE_USER", user);
       } catch (error: any) {
         setError(error.message);
       }
@@ -112,29 +110,32 @@ const BalancePage: React.FC = () => {
     <div className="balance-page">
       <div className="header">
         <div className="navigate">
-          <a onClick={() => navigate(`/settings`)}>
+          <div className="click" onClick={() => navigate(`/settings`)}>
             <img src="/svg/settings.svg" alt="settings" />
-          </a>
+          </div>
           <p>Профіль: {email}</p>
-          <a onClick={() => navigate(`/notification/${id}`)}>
+          <div
+            className="click"
+            onClick={() => navigate(`/notification/${id}`)}
+          >
             <img src="/svg/bell.svg" alt="bell" />
-          </a>
+          </div>
         </div>
         <h1>$ {balance?.toFixed(2)}</h1>
       </div>
 
       <div className="balance-buttons">
         <div className="todo-button">
-          <a onClick={() => navigate(`/recive`)}>
+          <div className="round-button" onClick={() => navigate(`/recive`)}>
             <img src="/svg/receive.svg" alt="receive" />
-          </a>
+          </div>
           <p>Receive</p>
         </div>
 
         <div className="todo-button">
-          <a onClick={() => navigate(`/send`)}>
+          <div className="round-button" onClick={() => navigate(`/send`)}>
             <img src="/svg/send.svg" alt="send" />
-          </a>
+          </div>
           <p>Send</p>
         </div>
       </div>

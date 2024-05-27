@@ -54,7 +54,6 @@ const SignupPage: React.FC = () => {
       });
 
       if (!res.ok) {
-        // alert("Не всі поля введені коректно");
         const errorData = await res.json();
         setErrorData(errorData.message);
         throw new Error(errorData.message);

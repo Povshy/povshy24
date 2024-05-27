@@ -52,21 +52,21 @@
   align-items: center;
   position: relative;
   z-index: 1;
+}
 
-  & a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #5b94e9;
-    height: 52px;
-    width: 52px;
-    border-radius: 50%;
-    margin: 10px;
-    position: relative;
-    z-index: 1;
-    box-shadow: 0px 0px 0px 10px rgb(227, 239, 247);
-    cursor: pointer;
-  }
+.round-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5b94e9;
+  height: 52px;
+  width: 52px;
+  border-radius: 50%;
+  margin: 10px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0px 0px 0px 10px rgb(227, 239, 247);
+  cursor: pointer;
 }
 
 .transactions {
@@ -119,4 +119,8 @@
   font-size: 16px;
   font-weight: 700;
   color: #d23b3b;
+}
+
+.click {
+  cursor: pointer;
 }

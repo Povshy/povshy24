@@ -11,11 +11,12 @@ const { Notification } = require('../class/notification')
 // ================================================================
 User.newUserConfirm('vlad@mail.com', 'www', 5750.65)
 User.newUserConfirm('tomka@mail.com', 'eee', 7073.27)
-User.newUserConfirm('www', 'www', 7073.27)
+User.newUserConfirm('www', 'www', 2580)
 
 // router.get Створює нам один ентпоїнт
 
 // ↙️ тут вводимо шлях (PATH) до сторінки
+
 router.post('/signup', function (req, res) {
   try {
     const { email, password } = req.body
@@ -28,7 +29,6 @@ router.post('/signup', function (req, res) {
     }
 
     const control = User.getByEmailConfirm(email)
-    console.log(`ccccccccccc`, control)
 
     if (control) {
       return res.status(400).json({
@@ -39,7 +39,7 @@ router.post('/signup', function (req, res) {
     const newUser = User.create(email, password)
     const confirmCode = User.generateCode()
     newUser.id = confirmCode
-    console.log('88888888', newUser)
+    console.log('New User', newUser)
 
     return res.status(200).json({
       user: {
@@ -78,8 +78,6 @@ router.post('/signup-confirm', function (req, res) {
       })
     }
 
-    console.log('Знайдений користувач:', user)
-
     if (code !== id) {
       return res.status(400).json({
         message: 'Неправильний код підтвердження',
@@ -107,7 +105,6 @@ router.post('/signup-confirm', function (req, res) {
     })
   }
 })
-
 // ================
 
 router.post('/signin', function (req, res) {
@@ -148,8 +145,8 @@ router.post('/signin', function (req, res) {
     })
   }
 })
-
 // ================
+
 router.post('/recovery', function (req, res) {
   try {
     const { email } = req.body
@@ -161,7 +158,6 @@ router.post('/recovery', function (req, res) {
     }
 
     const control = User.getByEmailConfirm(email)
-    console.log(`ccccccccccc`, control)
 
     if (!control) {
       return res.status(400).json({
@@ -184,9 +180,6 @@ router.post('/recovery', function (req, res) {
 router.post('/recovery-confirm', function (req, res) {
   try {
     const { code, id, password } = req.body
-
-    console.log(`User id:`, id)
-    console.log(`Code:`, code)
 
     if (!code || !id || !password) {
       return res.status(400).json({
@@ -233,8 +226,8 @@ router.post('/recovery-confirm', function (req, res) {
     })
   }
 })
-
 // ================
+
 router.get('/balance', function (req, res) {
   try {
     const { id } = req.query
@@ -263,6 +256,7 @@ router.get('/balance', function (req, res) {
   }
 })
 // ================
+
 router.get('/notification', function (req, res) {
   try {
     const { id } = req.query
@@ -270,8 +264,6 @@ router.get('/notification', function (req, res) {
     const user = User.getByIdConfirm(id)
 
     const notifications = Notification.getById(user.id)
-
-    console.log('NNNNNNNNNNNNNN', notifications)
 
     if (!user) {
       return res.status(400).json({
@@ -291,11 +283,10 @@ router.get('/notification', function (req, res) {
   }
 })
 // ================
+
 router.get('/transaction', function (req, res) {
   try {
     const { id } = req.query
-
-    console.log('TTTTTTTTTTTTTTransaction found:', id) // Додано для відладки
 
     const transaction = Finance.getById(id)
 
@@ -305,23 +296,19 @@ router.get('/transaction', function (req, res) {
       })
     }
 
-    console.log(
-      'TTTTTTTTTTTTTTransaction found:',
-      transaction,
-    ) // Додано для відладки
     return res.status(200).json({
       message: 'Дані трансакції',
       transaction: transaction,
     })
   } catch (error) {
-    console.error('Пrrrrrrrrrrrrrrrrомилка:', error)
+    console.error('Помилка:', error)
     return res.status(400).json({
       message: 'Виникла помилка при обробці запиту',
     })
   }
 })
-
 // ================
+
 router.post('/change-email', function (req, res) {
   try {
     const { id, email, password } = req.body
@@ -354,6 +341,7 @@ router.post('/change-email', function (req, res) {
   }
 })
 // ================
+
 router.post('/change-password', function (req, res) {
   try {
     const { id, oldPassword, newPassword } = req.body
@@ -386,6 +374,7 @@ router.post('/change-password', function (req, res) {
   }
 })
 // ================
+
 router.post('/recive', function (req, res) {
   try {
     const { user, amount, name } = req.body
@@ -416,11 +405,6 @@ router.post('/recive', function (req, res) {
     const newBalance = deposit
     Notification.note_inTrans(userMoney)
 
-    console.log(
-      'nononononnono',
-      Notification.getById(userMoney.id),
-    )
-
     return res.status(200).json({
       message: 'Рахунок успішно поповнено!',
       newBalance: newBalance,
@@ -433,7 +417,7 @@ router.post('/recive', function (req, res) {
   }
 })
 // ================
-// ================
+
 router.post('/send', function (req, res) {
   try {
     const { user, amount, name } = req.body
@@ -467,14 +451,6 @@ router.post('/send', function (req, res) {
     const newBalance = transfer.senderBalance
     Notification.note_inTrans(userGet)
     Notification.note_outTrans(userMoney)
-    console.log(
-      'AAAAAAAAAAAAAA',
-      Notification.getById(userGet.id),
-    )
-    console.log(
-      'BBBBBBBBBBBBBB',
-      Notification.getById(userMoney.id),
-    )
 
     return res.status(200).json({
       message: 'Кошти успішно відправлено!',

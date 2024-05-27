@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import "./index.css";
 
 import Title from "../../component/title";
-import Field from "../../component/field";
 import BackButton from "../../component/back-button";
 
 import { useParams } from "react-router-dom";

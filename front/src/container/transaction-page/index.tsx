@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import "./index.css";
 import { useParams } from "react-router-dom";
-import { roundBalance } from "../../script/utils";
 
 import Title from "../../component/title";
 import BackButton from "../../component/back-button";
