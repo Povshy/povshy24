@@ -78,6 +78,33 @@ const BalancePage: React.FC = () => {
     );
   };
 
+  const formatDate = (dateString: string) => {
+    const [datePart, timePart] = dateString.split(", ");
+    const [day, month, year] = datePart.split(".");
+    const date = new Date(`${year}-${month}-${day}T${timePart}`);
+
+    if (isNaN(date.getTime())) {
+      console.error("Invalid date:", dateString);
+      return "Invalid Date";
+    }
+
+    const dateOptions: Intl.DateTimeFormatOptions = {
+      month: "short",
+      day: "2-digit",
+    };
+
+    const timeOptions: Intl.DateTimeFormatOptions = {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false, // 24-hour format
+    };
+
+    const formattedDate = date.toLocaleDateString("en-US", dateOptions);
+    const formattedTime = date.toLocaleTimeString("en-US", timeOptions);
+
+    return `${formattedTime}`;
+  };
+
   return (
     <div className="balance-page">
       <div className="header">
@@ -124,9 +151,9 @@ const BalancePage: React.FC = () => {
                 </div>
 
                 <div className="transaction__info">
-                  <h2 className="transaction__name">{transaction.name}</h2>
+                  <h4 className="transaction__name">{transaction.name}</h4>
                   <span className="trans__date">
-                    {transaction.date} ---{" "}
+                    {formatDate(transaction.date)} ---{" "}
                     {isReceipt(transaction) ? "Receipt" : transaction.type}
                   </span>
                 </div>

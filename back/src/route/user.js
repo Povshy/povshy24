@@ -6,6 +6,7 @@ const router = express.Router()
 const { User } = require('../class/user')
 const { Session } = require('../class/session')
 const { Finance } = require('../class/finance')
+const { Notification } = require('../class/notification')
 
 // ================================================================
 User.newUserConfirm('vlad@mail.com', 'www', 5750.65)
@@ -315,6 +316,8 @@ router.post('/change-email', function (req, res) {
     }
 
     user.email = email
+    Notification.note_Email(user)
+
     return res.status(200).json({
       message: 'Email успішно змінено',
     })
@@ -345,6 +348,8 @@ router.post('/change-password', function (req, res) {
     }
 
     user.password = newPassword
+    Notification.note_Password(user)
+
     return res.status(200).json({
       message: 'Пароль успішно змінено',
     })
@@ -384,6 +389,7 @@ router.post('/recive', function (req, res) {
     console.log('DEPOSIT INFO', deposit)
 
     const newBalance = deposit
+    Notification.note_inTrans(userMoney)
 
     return res.status(200).json({
       message: 'Рахунок успішно поповнено!',
@@ -405,9 +411,10 @@ router.post('/send', function (req, res) {
     console.log('SENDING_BODY', req.body)
 
     const userMoney = User.getByIdConfirm(user.id)
+    const userGet = User.getByEmailConfirm(name)
     const newAmount = Number(amount)
 
-    if (!userMoney) {
+    if (!userMoney || !userGet) {
       return res.status(400).json({
         message: 'Користувача не знайдено',
       })
@@ -428,6 +435,16 @@ router.post('/send', function (req, res) {
     console.log('TRANSFER INFO', transfer)
 
     const newBalance = transfer.senderBalance
+    Notification.note_inTrans(userGet)
+    Notification.note_outTrans(userMoney)
+    console.log(
+      'AAAAAAAAAAAAAA',
+      Notification.getById(userGet.id),
+    )
+    console.log(
+      'BBBBBBBBBBBBBB',
+      Notification.getById(userMoney.id),
+    )
 
     return res.status(200).json({
       message: 'Кошти успішно відправлено!',

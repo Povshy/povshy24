@@ -79,11 +79,11 @@
 .transaction__item {
   background-color: rgb(179 211 233);
   border-radius: 12px;
-  padding: 10px;
+  padding: 10px 20px;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: 50px 1fr auto;
   align-items: center;
-  justify-content: space-between;
 
   gap: 12px;
   cursor: pointer;
@@ -102,6 +102,7 @@
 
 .trans__date {
   font-size: 12px;
+  font-weight: 600;
   color: #939199;
 }
 
