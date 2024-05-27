@@ -2,6 +2,7 @@ import { useState, useReducer, useContext, useEffect } from "react";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import { AuthContext, actionTypes } from "../../script/AuthContext";
+import { roundBalance } from "../../script/utils";
 
 import Title from "../../component/title";
 import Field from "../../component/field";
@@ -48,7 +49,7 @@ const RecivePage: React.FC = () => {
     const userString = localStorage.getItem("user");
     if (userString) {
       const user = JSON.parse(userString);
-      setBalance(user.balance); // Встановлюємо початкове значення балансу
+      setBalance(user.balance);
     }
   }, []);
 
@@ -81,11 +82,11 @@ const RecivePage: React.FC = () => {
 
       dispatch({ type: "SET_AMOUNT", payload: "" });
 
-      user.balance = data.newBalance; // Оновлюємо баланс користувача
+      user.balance = data.newBalance;
       localStorage.setItem("user", JSON.stringify(user));
       console.log("AFTER_RECIVE_USER", user);
 
-      setBalance(user.balance); // Оновлюємо стан балансу
+      setBalance(roundBalance(user.balance));
 
       setErrorData(null);
       alert(data.message);

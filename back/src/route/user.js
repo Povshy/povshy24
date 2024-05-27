@@ -8,6 +8,9 @@ const { Session } = require('../class/session')
 const { Finance } = require('../class/finance')
 
 // ================================================================
+User.newUserConfirm('vlad@mail.com', 'www', 5750.65)
+User.newUserConfirm('tomka@mail.com', 'eee', 7073.27)
+User.newUserConfirm('www', 'www', 7073.27)
 
 // router.get Створює нам один ентпоїнт
 
@@ -23,7 +26,7 @@ router.post('/signup', function (req, res) {
       })
     }
 
-    const control = User.getByEmail(email)
+    const control = User.getByEmailConfirm(email)
     console.log(`ccccccccccc`, control)
 
     if (control) {
@@ -118,7 +121,6 @@ router.post('/signin', function (req, res) {
     }
 
     const confirmUser = User.getByEmailConfirm(email)
-    const session = Session.create(confirmUser)
 
     if (!confirmUser) {
       return res.status(400).json({
@@ -132,6 +134,8 @@ router.post('/signin', function (req, res) {
       })
     }
 
+    const session = Session.create(confirmUser)
+
     return res.status(200).json({
       id: confirmUser.id,
       message: 'Вхід виконаний успішно',
@@ -139,7 +143,7 @@ router.post('/signin', function (req, res) {
     })
   } catch (error) {
     return res.status(400).json({
-      message: 'SignUp fuckin problem',
+      message: 'Виникла помилка при обробці запиту',
     })
   }
 })
@@ -170,7 +174,7 @@ router.post('/recovery', function (req, res) {
     })
   } catch (error) {
     return res.status(400).json({
-      message: 'Recovery fuckin problem',
+      message: 'Виникла помилка при обробці запиту',
     })
   }
 })

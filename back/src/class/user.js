@@ -1,14 +1,16 @@
 class User {
   static #list = []
   static #confirmList = []
-  static #count = 1
+  static #count = 100
 
   constructor(email, password, balance) {
     this.id = User.#count++
 
     this.email = String(email).toLowerCase()
     this.password = String(password)
-    this.balance = balance || 2500
+    this.balance = balance
+      ? parseFloat(balance.toFixed(2))
+      : 2500
   }
 
   static create(email, password) {
@@ -34,8 +36,16 @@ class User {
     )
   }
 
-  static getList() {
-    return User.#list
+  static newUserConfirm(
+    email,
+    password,
+    balance = 2500,
+    id,
+  ) {
+    const newUser = new User(email, password, balance)
+    User.#confirmList.push(newUser)
+
+    return newUser
   }
 
   static createConfirm(user) {
@@ -65,6 +75,10 @@ class User {
   static generateCode() {
     const code = Math.floor(10000 + Math.random() * 90000)
     return code
+  }
+
+  static getConfirmList() {
+    return User.#confirmList
   }
 
   save() {

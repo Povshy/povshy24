@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./index.css";
 import { useParams } from "react-router-dom";
+import { roundBalance } from "../../script/utils";
 
 import Title from "../../component/title";
 import BackButton from "../../component/back-button";
@@ -36,7 +37,6 @@ const TransactionPage: React.FC = () => {
 
           const data = await res.json();
           setTransaction(data.transaction);
-          console.log("Transaction data received:", data);
           console.log("Transaction data received:", data); // Додано для відладки
         } catch (error: any) {
           console.error("Error fetching transaction:", error.message); // Додано для відладки
@@ -98,9 +98,13 @@ const TransactionPage: React.FC = () => {
         ) : transaction ? (
           <div className="transaction-details">
             {isReceipt(transaction) ? (
-              <div className="amount__plus">+${transaction.amount}</div>
+              <div className="amount__plus">
+                +${transaction.amount.toFixed(2)}
+              </div>
             ) : (
-              <div className="amount__minus">-${transaction.amount}</div>
+              <div className="amount__minus">
+                -${transaction.amount.toFixed(2)}
+              </div>
             )}
 
             <div className="transaction-info">

@@ -1,6 +1,7 @@
 import { useState, useReducer, useContext, useEffect } from "react";
 import "./index.css";
 import { AuthContext, actionTypes } from "../../script/AuthContext";
+import { roundBalance } from "../../script/utils";
 
 import Title from "../../component/title";
 import Field from "../../component/field";
@@ -41,7 +42,7 @@ const SendPage: React.FC = () => {
     const userString = localStorage.getItem("user");
     if (userString) {
       const user = JSON.parse(userString);
-      setBalance(user.balance); // Встановлюємо початкове значення балансу
+      setBalance(user.balance);
     }
   }, []);
 
@@ -79,7 +80,7 @@ const SendPage: React.FC = () => {
       localStorage.setItem("user", JSON.stringify(user));
       console.log("AFTER_SEND_USER", user);
 
-      setBalance(user.balance); // Оновлюємо стан балансу
+      setBalance(roundBalance(user.balance)); // Оновлюємо стан балансу
 
       setErrorData(null);
       alert(data.message);

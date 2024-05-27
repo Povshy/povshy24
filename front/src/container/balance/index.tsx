@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { roundBalance } from "../../script/utils";
 import "./index.css";
 
 import stripe_logo from "./stripe.svg";
@@ -40,7 +41,7 @@ const BalancePage: React.FC = () => {
         }
 
         const data = await res.json();
-        setBalance(data.balance);
+        setBalance(roundBalance(data.balance));
         setEmail(data.email);
         setTrans(data.transactions);
 
@@ -58,7 +59,7 @@ const BalancePage: React.FC = () => {
   }
 
   const logoMap: { [key: string]: string } = {
-    Stripe: stripe_logo, // Вставте URL логотипу
+    Stripe: stripe_logo,
     Coinbase: coinbase_logo,
     Sending: send_logo,
   };
@@ -89,7 +90,7 @@ const BalancePage: React.FC = () => {
             <img src="/svg/bell.svg" alt="bell" />
           </a>
         </div>
-        <h1>$ {balance}</h1>
+        <h1>$ {balance?.toFixed(2)}</h1>
       </div>
 
       <div className="balance-buttons">
@@ -132,11 +133,11 @@ const BalancePage: React.FC = () => {
 
                 {isReceipt(transaction) ? (
                   <div className="transaction__plus">
-                    +${transaction.amount}
+                    +${transaction.amount.toFixed(2)}
                   </div>
                 ) : (
                   <div className="transaction__minus">
-                    -${transaction.amount}
+                    -${transaction.amount.toFixed(2)}
                   </div>
                 )}
               </div>
