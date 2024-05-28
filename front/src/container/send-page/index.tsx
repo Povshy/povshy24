@@ -1,6 +1,5 @@
-import { useState, useReducer, useContext, useEffect } from "react";
+import { useState, useReducer, useEffect } from "react";
 import "./index.css";
-import { AuthContext, actionTypes } from "../../script/AuthContext";
 import { roundBalance } from "../../script/utils";
 
 import Title from "../../component/title";

@@ -1,7 +1,6 @@
 import { useState, useReducer, useContext, useEffect } from "react";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
-import { AuthContext, actionTypes } from "../../script/AuthContext";
 import { roundBalance } from "../../script/utils";
 
 import Title from "../../component/title";

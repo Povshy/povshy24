@@ -29,16 +29,16 @@ const authReducer = (state, action) => {
   }
 };
 
-// Створюємо контекст
 const AuthContext = createContext();
 
-// Компонент провайдера
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
+
+    console.log("AuthProvider useEffect - token:", token, "user:", user); // Додайте логування
 
     if (token && user) {
       dispatch({
@@ -47,6 +47,8 @@ const AuthProvider = ({ children }) => {
       });
     }
   }, []);
+
+  console.log("AuthProvider state:", state); // Додайте логування
 
   return (
     <AuthContext.Provider value={{ state, dispatch }}>

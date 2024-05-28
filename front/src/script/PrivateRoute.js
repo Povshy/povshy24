@@ -8,13 +8,16 @@ const PrivateRoute = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log("PrivateRoute useEffect - token:", token, "user:", user); // Додайте логування
+    if (token && user) {
       setIsAuth(true);
     } else {
       setIsAuth(false);
     }
   }, [state.token]);
 
+  console.log("PrivateRoute - isAuth:", isAuth); // Додайте логування
   if (!isAuth) {
     return <Navigate to="/" replace />;
   }

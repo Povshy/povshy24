@@ -114,6 +114,7 @@ const BalancePage: React.FC = () => {
             <img src="/svg/settings.svg" alt="settings" />
           </div>
           <p>Профіль: {email}</p>
+          <a href=""></a>
           <div
             className="click"
             onClick={() => navigate(`/notification/${id}`)}

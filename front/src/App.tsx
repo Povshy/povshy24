@@ -21,6 +21,7 @@ import Error from "./container/error-page";
 import "./App.css";
 
 function App() {
+  console.log("App render"); // Додайте логування
   return (
     <AuthProvider>
       <div className="page">

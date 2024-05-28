@@ -8,6 +8,8 @@ import Field from "../../component/field";
 import FieldPassword from "../../component/field-password";
 import BackButton from "../../component/back-button";
 
+const REG_EXP_EMAIL = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/;
+
 const initialState = {
   email: "",
   password: "",
@@ -42,6 +44,10 @@ const SignupPage: React.FC = () => {
 
   const handleContinue = async () => {
     try {
+      if (!REG_EXP_EMAIL.test(state.email)) {
+        throw new Error("Введіть дійсну адресу електронної пошти");
+      }
+
       const res = await fetch("http://localhost:4000/signup", {
         method: "POST",
         headers: {
