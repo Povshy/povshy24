@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import back_logo from "./back.svg";
 
 import "./index.css";
 
@@ -12,7 +13,7 @@ const BackButton = () => {
 
   return (
     <button onClick={goBack} className="back">
-      <img src="/svg/back.svg" alt="back" />
+      <img src={back_logo} alt="back" />
     </button>
   );
 };

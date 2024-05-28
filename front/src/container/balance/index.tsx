@@ -9,6 +9,11 @@ import stripe_logo from "./stripe.svg";
 import coinbase_logo from "./coinbase.svg";
 import send_logo from "./send.svg";
 
+import bell_logo from "./bell.svg";
+import receive_logo from "./receive.svg";
+import sending_logo from "./sending.svg";
+import settings_logo from "./settings.svg";
+
 const BalancePage: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
@@ -111,14 +116,14 @@ const BalancePage: React.FC = () => {
       <div className="header">
         <div className="navigate">
           <div className="click" onClick={() => navigate(`/settings`)}>
-            <img src="/svg/settings.svg" alt="settings" />
+            <img src={settings_logo} alt="settings" />
           </div>
           <p>Профіль: {email}</p>
           <div
             className="click"
             onClick={() => navigate(`/notification/${id}`)}
           >
-            <img src="/svg/bell.svg" alt="bell" />
+            <img src={bell_logo} alt="bell" />
           </div>
         </div>
         <h1>$ {balance?.toFixed(2)}</h1>
@@ -127,14 +132,14 @@ const BalancePage: React.FC = () => {
       <div className="balance-buttons">
         <div className="todo-button">
           <div className="round-button" onClick={() => navigate(`/recive`)}>
-            <img src="/svg/receive.svg" alt="receive" />
+            <img src={receive_logo} alt="receive" />
           </div>
           <p>Receive</p>
         </div>
 
         <div className="todo-button">
           <div className="round-button" onClick={() => navigate(`/send`)}>
-            <img src="/svg/send.svg" alt="send" />
+            <img src={sending_logo} alt="send" />
           </div>
           <p>Send</p>
         </div>
